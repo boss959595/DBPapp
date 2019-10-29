@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dbpapp/models/user_accout.dart';
 import 'package:dbpapp/models/user_model.dart';
+import 'package:dbpapp/screens/main_store.dart';
 import 'package:dbpapp/screens/my_style.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -19,6 +20,9 @@ class _StoreState extends State<Store> {
   UserAccoutModel _userAccoutModel;
   String loginString = '';
   UserModel userModel;
+  List<String> titleAppBars = ['คลังกลาง','คลังไฟฟ้า','คลังเครื่องกล'];
+  int indexTitleAppBars =0;
+  Widget currentWiget = MainStore();
 
   // Method
   void closeDrawer() {
@@ -43,6 +47,9 @@ class _StoreState extends State<Store> {
       title: Text('คลังกลาง'),
       subtitle: Text('คำอธิบาย'),
       onTap: () {
+        setState(() {
+         indexTitleAppBars = 0; 
+        });
         closeDrawer();
       },
     );
@@ -58,6 +65,9 @@ class _StoreState extends State<Store> {
       title: Text('คลังไฟฟ้า'),
       subtitle: Text('คำอธิบาย'),
       onTap: () {
+        setState(() {
+         indexTitleAppBars=1; 
+        });
         closeDrawer();
       },
     );
@@ -73,6 +83,9 @@ class _StoreState extends State<Store> {
       title: Text('คลังเครื่องกล'),
       subtitle: Text('คำอธิบาย'),
       onTap: () {
+        setState(() {
+         indexTitleAppBars=2; 
+        });
         closeDrawer();
       },
     );
@@ -189,10 +202,10 @@ class _StoreState extends State<Store> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Store'),
+      appBar: AppBar(backgroundColor: MyStyle().textColor,
+        title: Text(titleAppBars[indexTitleAppBars]),
       ),
-      body: Text('body'),
+      body: currentWiget,
       drawer: showDrawer(),
     );
   }

@@ -47,6 +47,15 @@ flutter:
    - images/logo.png
    - images/avatar.png
    - images/bg1.jpg
+   - images/matcenter.png
+   - images/matelec.png
+   - images/matmachine.png
+   - images/his1.png
+   - images/his2.png
+   - images/his3.png
+   - images/worn1.png
+   - images/worn2.png
+   - images/worn3.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

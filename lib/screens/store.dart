@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:dbpapp/models/user_accout.dart';
 import 'package:dbpapp/models/user_model.dart';
-import 'package:dbpapp/screens/main_store.dart';
+import 'package:dbpapp/screens/my_center.dart';
+import 'package:dbpapp/screens/my_electric.dart';
+import 'package:dbpapp/screens/my_machine.dart';
 import 'package:dbpapp/screens/my_style.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -20,9 +22,9 @@ class _StoreState extends State<Store> {
   UserAccoutModel _userAccoutModel;
   String loginString = '';
   UserModel userModel;
-  List<String> titleAppBars = ['คลังกลาง','คลังไฟฟ้า','คลังเครื่องกล'];
-  int indexTitleAppBars =0;
-  Widget currentWiget = MainStore();
+  List<String> titleAppBars = ['คลังกลาง', 'คลังไฟฟ้า', 'คลังเครื่องกล'];
+  int indexTitleAppBars = 0;
+  Widget currentWiget = MyCenter();
 
   // Method
   void closeDrawer() {
@@ -48,7 +50,8 @@ class _StoreState extends State<Store> {
       subtitle: Text('คำอธิบาย'),
       onTap: () {
         setState(() {
-         indexTitleAppBars = 0; 
+          indexTitleAppBars = 0;
+          currentWiget = MyCenter();
         });
         closeDrawer();
       },
@@ -66,7 +69,8 @@ class _StoreState extends State<Store> {
       subtitle: Text('คำอธิบาย'),
       onTap: () {
         setState(() {
-         indexTitleAppBars=1; 
+          indexTitleAppBars = 1;
+          currentWiget = MyElectric();
         });
         closeDrawer();
       },
@@ -84,7 +88,8 @@ class _StoreState extends State<Store> {
       subtitle: Text('คำอธิบาย'),
       onTap: () {
         setState(() {
-         indexTitleAppBars=2; 
+          indexTitleAppBars = 2;
+          currentWiget = MyMachine();
         });
         closeDrawer();
       },
@@ -202,7 +207,8 @@ class _StoreState extends State<Store> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: MyStyle().textColor,
+      appBar: AppBar(
+        backgroundColor: MyStyle().textColor,
         title: Text(titleAppBars[indexTitleAppBars]),
       ),
       body: currentWiget,

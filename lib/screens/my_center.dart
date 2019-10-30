@@ -1,3 +1,4 @@
+import 'package:dbpapp/screens/search_center.dart';
 import 'package:flutter/material.dart';
 
 import 'my_style.dart';
@@ -8,7 +9,6 @@ class MyCenter extends StatefulWidget {
 }
 
 class _MyCenterState extends State<MyCenter> {
-
   // Explicil
   List<String> iconMaterial = [
     'images/matcenter.png',
@@ -28,12 +28,11 @@ class _MyCenterState extends State<MyCenter> {
     'images/his3.png',
   ];
 
-
-   int indexMaterial = 0;
+  int indexMaterial = 0;
 
   // Method
 
-   Widget cardMenu1() {
+  Widget cardMenu1() {
     return Card(
       child: ListTile(
         leading: Container(
@@ -46,6 +45,11 @@ class _MyCenterState extends State<MyCenter> {
           'วัสดุ และ อุปกรณ์',
           style: TextStyle(fontSize: MyStyle().h2),
         ),
+        onTap: () {
+          MaterialPageRoute materialPageRoute = MaterialPageRoute(
+              builder: (BuildContext context) => SearchCenter());
+              Navigator.of(context).push(materialPageRoute);
+        },
       ),
     );
   }
@@ -86,11 +90,11 @@ class _MyCenterState extends State<MyCenter> {
     );
   }
 
-   Widget content() {
+  Widget content() {
     return Container(
       padding: EdgeInsets.only(
-        left: 35.0,
-        right: 35.0,
+        left: 30.0,
+        right: 30.0,
         top: 100.0,
       ),
       child: Column(
@@ -113,14 +117,14 @@ class _MyCenterState extends State<MyCenter> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         gradient: RadialGradient(
           colors: [Colors.white, Colors.blue[600]],
-          radius: 1.8,center: Alignment.topCenter,
+          radius: 1.8,
+          center: Alignment.topCenter,
         ),
       ),
       child: Column(

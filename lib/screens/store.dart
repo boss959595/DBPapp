@@ -1,13 +1,16 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:dbpapp/models/user_accout.dart';
 import 'package:dbpapp/models/user_model.dart';
+import 'package:dbpapp/screens/home.dart';
 import 'package:dbpapp/screens/my_center.dart';
 import 'package:dbpapp/screens/my_electric.dart';
 import 'package:dbpapp/screens/my_machine.dart';
 import 'package:dbpapp/screens/my_style.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Store extends StatefulWidget {
   final UserAccoutModel userAccoutModel;
@@ -140,9 +143,55 @@ class _StoreState extends State<Store> {
     }
   }
 
+  Widget spcialButton() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        iconChangePassword(),
+        iconLogout(),
+      ],
+    );
+  }
+
+  Widget iconLogout() {
+    return IconButton(
+      tooltip: 'ออกระบบ',
+      icon: Icon(
+        Icons.exit_to_app,
+        color: Colors.red,
+        size: 36.0,
+      ),
+      onPressed: () {
+        processLogOut();
+      },
+    );
+  }
+
+  Future<void> processLogOut() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.clear();
+
+    MaterialPageRoute materialPageRoute =
+        MaterialPageRoute(builder: (BuildContext context) => Home());
+    Navigator.of(context)
+        .pushAndRemoveUntil(materialPageRoute, (Route<dynamic> route) => false);
+  }
+
+  Widget iconChangePassword() {
+    return IconButton(
+      tooltip: 'เปลี่ยนพาสเวิร์ด',
+      icon: Icon(
+        Icons.lock,
+        color: Colors.green.shade600,
+        size: 36.0,
+      ),
+      onPressed: () {},
+    );
+  }
+
   Widget showLogin() {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
           'ผู้ใช้ $loginString',
@@ -151,6 +200,7 @@ class _StoreState extends State<Store> {
             fontWeight: FontWeight.bold,
           ),
         ),
+        spcialButton(),
       ],
     );
   }
@@ -160,8 +210,8 @@ class _StoreState extends State<Store> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
-          width: 100.0,
-          height: 100.0,
+          width: 85.0,
+          height: 85.0,
           child: Image.asset('images/avatar.png'),
         ),
       ],
@@ -196,9 +246,9 @@ class _StoreState extends State<Store> {
           Divider(),
           menuMachineStore(),
           Divider(),
-          menuChangePassStore(),
-          Divider(),
-          menuLogOutStore(),
+          // menuChangePassStore(),
+          // Divider(),
+          // menuLogOutStore(),
         ],
       ),
     );

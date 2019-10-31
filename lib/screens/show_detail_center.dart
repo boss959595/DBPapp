@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:dbpapp/models/equipment_model.dart';
+import 'package:dbpapp/models/user_accout.dart';
 import 'package:dbpapp/screens/my_style.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 //stl
 class ShowDetailCenter extends StatefulWidget {
@@ -13,6 +18,7 @@ class ShowDetailCenter extends StatefulWidget {
 class _ShowDetailCenterState extends State<ShowDetailCenter> {
   // Explicit
   EquipmentModel myEquipmentModel;
+  String userString, levelString = '';
 
   // Method
   @override
@@ -20,7 +26,28 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     super.initState();
     setState(() {
       myEquipmentModel = widget.equipmentModel;
+      findUser();
     });
+  }
+
+  Future findUser() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    userString = sharedPreferences.getString('User');
+    print(userString);
+    findLevel();
+  }
+
+  Future findLevel() async {
+    String url = '${MyStyle().urlGetUser}$userString';
+    Response response = await get(url);
+    var result = json.decode(response.body);
+    print(result);
+    for (var map in result) {
+      UserAccoutModel userAccoutModel = UserAccoutModel.fromJSON(map);
+      setState(() {
+        levelString = userAccoutModel.level;
+      });
+    }
   }
 
   Widget showName() {
@@ -60,7 +87,8 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
   }
 
   Widget myButton() {
-    return Column(mainAxisAlignment: MainAxisAlignment.end,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Row(
           children: <Widget>[
@@ -74,9 +102,13 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
 
   Widget increaseButton() {
     return Expanded(
-          child: RaisedButton.icon(color: Colors.lightGreen,
+      child: RaisedButton.icon(
+        color: Colors.lightGreen,
         icon: Icon(Icons.add_shopping_cart),
-        label: Text('เพิ่ม' ,style: TextStyle(color: Colors.black),),
+        label: Text(
+          'เพิ่ม',
+          style: TextStyle(color: Colors.black),
+        ),
         onPressed: () {},
       ),
     );
@@ -84,7 +116,8 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
 
   Widget decreaseButton() {
     return Expanded(
-          child: RaisedButton.icon(color: Colors.red.shade500,
+      child: RaisedButton.icon(
+        color: Colors.red.shade500,
         icon: Icon(Icons.remove_shopping_cart),
         label: Text('ลด'),
         onPressed: () {},
@@ -111,8 +144,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
                 myTotal(),
               ],
             ),
-          ),
-          myButton(),
+          ),levelString=='1'? myButton(): SizedBox(),
         ],
       ),
     );

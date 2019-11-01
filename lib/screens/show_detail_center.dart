@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:dbpapp/models/equipment_model.dart';
 import 'package:dbpapp/models/user_accout.dart';
@@ -6,6 +7,7 @@ import 'package:dbpapp/screens/my_center.dart';
 import 'package:dbpapp/screens/my_dialog.dart';
 import 'package:dbpapp/screens/my_style.dart';
 import 'package:dbpapp/screens/search_center.dart';
+import 'package:dbpapp/screens/store.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,6 +25,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
   EquipmentModel myEquipmentModel;
   String userString, levelString = '', numberString, nameString;
   final formKey = GlobalKey<FormState>();
+  UserAccoutModel userAccoutModel;
 
   // Method
   @override
@@ -47,7 +50,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     var result = json.decode(response.body);
     print(result);
     for (var map in result) {
-      UserAccoutModel userAccoutModel = UserAccoutModel.fromJSON(map);
+      userAccoutModel = UserAccoutModel.fromJSON(map);
       setState(() {
         levelString = userAccoutModel.level;
       });
@@ -282,7 +285,9 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     var result = json.decode(response.body);
     if (result.toString() == 'true') {
       MaterialPageRoute materialPageRoute = MaterialPageRoute(
-        builder: (BuildContext context) => MyCenter(),
+        builder: (BuildContext context) => Store(
+          userAccoutModel: userAccoutModel,
+        ),
       );
       Navigator.of(context).pushAndRemoveUntil(
           materialPageRoute, (Route<dynamic> route) => false);
@@ -305,10 +310,29 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
 
       if (totalAInt <= limitAInt) {
         // Call limit line api
+        callLineAPI();
       }
       increaseAndDecreaseProcess('1');
       insertReport('1', totalAInt);
     }
+  }
+
+  Future<void> callLineAPI() async {
+    String message =
+        '      ชื่อ : ${myEquipmentModel.name} กลุ่ม : ${myEquipmentModel.group} ประเภท : ${myEquipmentModel.type} จำนวนคงเหลือ : ${myEquipmentModel.total} ${myEquipmentModel.unit}';
+
+    String url = 'https://notify-api.line.me/api/notify?message=$message';
+    Map<String, String> headers = {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "Authorization": "Bearer s1mg5tgZjQICeHgjLSzGbG39kLbVAsDbTilYurdZ2W4"
+    };
+    String body = '{"message":"boss test"}';
+
+    Response response = await post(url, headers: headers, body: body);
+    int statusCode = response.statusCode;
+    print('statusCode = $statusCode');
+    String result = response.body;
+    print(result);
   }
 
   void showAlert(int index) {
@@ -331,11 +355,21 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
         });
   }
 
+  // Widget testLine() {
+  //   return IconButton(
+  //     icon: Icon(Icons.android),
+  //     onPressed: () {
+  //       callLineAPI();
+  //     },
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
+        // actions: <Widget>[testLine()],
         backgroundColor: Colors.orange,
         iconTheme: IconTheme.of(context),
         title: Text(

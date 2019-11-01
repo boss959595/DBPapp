@@ -119,7 +119,7 @@ class _MyElectricState extends State<MyElectric> {
     return Container(
       decoration: BoxDecoration(
         gradient: RadialGradient(
-          colors: [Colors.white, MyStyle().mainColor],
+          colors: [Colors.white, Colors.yellowAccent],
           radius: 1.8,center: Alignment.topCenter,
         ),
       ),

@@ -122,7 +122,7 @@ class _MyCenterState extends State<MyCenter> {
     return Container(
       decoration: BoxDecoration(
         gradient: RadialGradient(
-          colors: [Colors.white, Colors.blue[600]],
+          colors: [Colors.white, Colors.orange[400]],
           radius: 1.8,
           center: Alignment.topCenter,
         ),

@@ -119,7 +119,7 @@ class _MyMachineState extends State<MyMachine> {
     return Container(
       decoration: BoxDecoration(
         gradient: RadialGradient(
-          colors: [Colors.white, Colors.brown[600]],
+          colors: [Colors.white, Colors.brown],
           radius: 1.8,center: Alignment.topCenter,
         ),
       ),

@@ -28,6 +28,8 @@ class _StoreState extends State<Store> {
   List<String> titleAppBars = ['คลังกลาง', 'คลังไฟฟ้า', 'คลังเครื่องกล'];
   int indexTitleAppBars = 0;
   Widget currentWiget = MyCenter();
+  List<Color> colorAppBars = [MyStyle().appBarCenter, MyStyle().appBarElectric, MyStyle().appBarMachine];
+
 
   // Method
   void closeDrawer() {
@@ -45,7 +47,7 @@ class _StoreState extends State<Store> {
   Widget menuCenterStore() {
     return ListTile(
       leading: Icon(
-        Icons.build,
+        Icons.filter_tilt_shift,
         size: 36.0,
         color: Colors.orange[600],
       ),
@@ -83,7 +85,7 @@ class _StoreState extends State<Store> {
   Widget menuMachineStore() {
     return ListTile(
       leading: Icon(
-        Icons.settings_applications,
+        Icons.build,
         size: 36.0,
         color: Colors.brown[600],
       ),
@@ -194,7 +196,7 @@ class _StoreState extends State<Store> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          'ผู้ใช้ $loginString',
+          'ผู้ใช้ : $loginString',
           style: TextStyle(
             color: Colors.orange,
             fontWeight: FontWeight.bold,
@@ -257,9 +259,9 @@ class _StoreState extends State<Store> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: MyStyle().textColor,
-        title: Text(titleAppBars[indexTitleAppBars]),
+      appBar: AppBar(iconTheme: IconTheme.of(context),
+        backgroundColor: colorAppBars[indexTitleAppBars],
+        title: Text(titleAppBars[indexTitleAppBars],style: TextStyle(color: Colors.black),),
       ),
       body: currentWiget,
       drawer: showDrawer(),

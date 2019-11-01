@@ -58,7 +58,13 @@ class _SearchViewMaterialState extends State<SearchCenter> {
 
   Widget searchText() {
     return TextField(
-      decoration: InputDecoration(hintText: 'Search'),
+      decoration: InputDecoration(
+        hintText: 'ค้นหา',
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.yellow.shade600),
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+      ),
       onChanged: (value) {
         debouncer.run(() {
           setState(() {
@@ -79,18 +85,23 @@ class _SearchViewMaterialState extends State<SearchCenter> {
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             child: Card(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  showName(index),
-                  showTotal(index),
-                ],
+              child: Container(
+                padding: EdgeInsets.fromLTRB(5.0, 3.0, 5.0, 0.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    showName(index),
+                    showTotal(index),
+                  ],
+                ),
               ),
             ),
             onTap: () {
               print('You click ${filterEquipmentModels[index].name}');
               MaterialPageRoute materialPageRoute = MaterialPageRoute(
-                  builder: (BuildContext context) => ShowDetailCenter(equipmentModel: filterEquipmentModels[index],));
+                  builder: (BuildContext context) => ShowDetailCenter(
+                        equipmentModel: filterEquipmentModels[index],
+                      ));
               Navigator.of(context).push(materialPageRoute);
             },
           );
@@ -120,12 +131,19 @@ class _SearchViewMaterialState extends State<SearchCenter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('วัสดุ และ อุปกรณ์ คลังกลาง'),
+      appBar: AppBar(iconTheme: IconTheme.of(context),
+        backgroundColor: Colors.orange,
+        title: Text(
+          'วัสดุ และ อุปกรณ์ คลังกลาง',
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: Column(
         children: <Widget>[
-          searchText(),
+          Container(
+            padding: EdgeInsets.all(10.0),
+            child: searchText(),
+          ),
           showListView(),
         ],
       ),

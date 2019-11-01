@@ -87,7 +87,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
             child: Card(
               child: Container(
                 padding: EdgeInsets.fromLTRB(5.0, 3.0, 5.0, 0.0),
-                child: Row(
+                child: Row( 
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     showName(index),

@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:dbpapp/models/equipment_model.dart';
 import 'package:dbpapp/screens/my_style.dart';
-import 'package:dbpapp/screens/show_detail_center.dart';
+import 'package:dbpapp/screens/search_add_equiment_center.dart';
+import 'package:dbpapp/screens/searcth_detail_center.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -33,6 +34,12 @@ class _SearchViewMaterialState extends State<SearchCenter> {
   List<EquipmentModel> equipmentModels = [];
   List<EquipmentModel> filterEquipmentModels = List();
   final debouncer = Debouncer(milliseconds: 500);
+  final formKey = GlobalKey<FormState>();
+
+    String userString, levelString = '', numberString, nameString;
+
+  String arrowR1 = 'images/right1.png';
+  String arrowR2 = 'images/right2.png';
 
   // Method
   @override
@@ -56,14 +63,20 @@ class _SearchViewMaterialState extends State<SearchCenter> {
     }
   }
 
+  // enabledBorder: OutlineInputBorder(
+  //         borderSide: BorderSide(color: Colors.yellow.shade600),
+  //         borderRadius: BorderRadius.circular(20.0),
+  //       ),
+
   Widget searchText() {
     return TextField(
       decoration: InputDecoration(
-        hintText: 'ค้นหา',
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.yellow.shade600),
           borderRadius: BorderRadius.circular(20.0),
         ),
+        prefixIcon: Icon(Icons.search),
+        hintText: 'ค้นหา',
       ),
       onChanged: (value) {
         debouncer.run(() {
@@ -87,7 +100,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
             child: Card(
               child: Container(
                 padding: EdgeInsets.fromLTRB(5.0, 3.0, 5.0, 0.0),
-                child: Row( 
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     showName(index),
@@ -97,7 +110,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
               ),
             ),
             onTap: () {
-              print('You click ${filterEquipmentModels[index].name}');
+              // print('You click ${filterEquipmentModels[index].name}');
               MaterialPageRoute materialPageRoute = MaterialPageRoute(
                   builder: (BuildContext context) => ShowDetailCenter(
                         equipmentModel: filterEquipmentModels[index],
@@ -115,6 +128,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
       filterEquipmentModels[index].name,
       style: TextStyle(
         fontSize: MyStyle().h2,
+        color: Colors.orange,
       ),
     );
   }
@@ -124,6 +138,102 @@ class _SearchViewMaterialState extends State<SearchCenter> {
       filterEquipmentModels[index].total,
       style: TextStyle(
         fontSize: MyStyle().h1,
+        color: Colors.lightBlueAccent[700],
+      ),
+    );
+  }
+
+  Widget addEquipment() {
+    return IconButton(
+      icon: Icon(Icons.add_box),
+      onPressed: () {
+        showEditEquipment();
+
+      },
+    );
+  }
+
+  void showEditEquipment(){
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            titlePadding: EdgeInsets.fromLTRB(0.0, 5.0, 5.0, 0.0),
+            contentPadding: EdgeInsets.fromLTRB(24.0, 0.0, 24.0, 0.0),
+            title: Text('เพิ่มวัดุหรืออุปกรณ์'),
+            content: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: showEditEquipment1(),
+            ),
+            actions: <Widget>[
+              // okButton(),
+              // cancelButton(),
+            ],
+          );
+        });
+  }
+
+  Widget showEditEquipment1() {
+
+    return Form(
+      key: formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SizedBox(
+            height: 5.0,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: 'ชื่อผู้ทำรายการ',
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.yellow.shade600),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'กรุณาใส่ชื่อผู้ทำรายการ';
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) {
+              nameString = value.trim();
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget headColumn() {
+    return Container(
+      padding: EdgeInsets.fromLTRB(20.0, 3.0, 5.0, 5.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            'ชื่อ',
+            style: TextStyle(
+              fontSize: 20,
+              foreground: Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 1
+                ..color = Colors.orange[700],
+            ),
+          ),
+          Text(
+            'จำนวน',
+            style: TextStyle(
+              fontSize: 20,
+              foreground: Paint()
+                ..style = PaintingStyle.stroke
+                ..strokeWidth = 1
+                ..color = Colors.lightBlueAccent[700],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -131,7 +241,9 @@ class _SearchViewMaterialState extends State<SearchCenter> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(iconTheme: IconTheme.of(context),
+      appBar: AppBar(
+        actions: <Widget>[addEquipment()],
+        iconTheme: IconTheme.of(context),
         backgroundColor: Colors.orange,
         title: Text(
           'วัสดุ และ อุปกรณ์ คลังกลาง',
@@ -141,9 +253,10 @@ class _SearchViewMaterialState extends State<SearchCenter> {
       body: Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.all(10.0),
+            padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
             child: searchText(),
           ),
+          headColumn(),
           showListView(),
         ],
       ),

@@ -56,6 +56,9 @@ flutter:
    - images/worn1.png
    - images/worn2.png
    - images/worn3.png
+   - images/arrow_right1.png
+   - images/arrow_right2.png
+   
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -190,7 +190,6 @@ class _HomeState extends State<Home> {
         String truePass = userAccoutModel.pass;
         print('truePass = $truePass');
         if (password == truePass) {
-
           if (statusRemember) {
             saveRemember();
           }
@@ -205,8 +204,6 @@ class _HomeState extends State<Home> {
               (Route<dynamic> route) {
             return false;
           });
-
-          
         } else {
           normalAlert(context, 'รหัสผิด', 'กรุณาลองใหม่อีกครั้ง');
         }
@@ -214,7 +211,7 @@ class _HomeState extends State<Home> {
     }
   }
 
-  Future<void> saveRemember()async{
+  Future<void> saveRemember() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString('User', user);
   }
@@ -236,8 +233,16 @@ class _HomeState extends State<Home> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  showLogo(),
-                  showAppName(),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.fromLTRB(13, 0, 0, 0),
+                       child: showLogo(),
+                     
+                      ),
+                      showAppName(),
+                    ],
+                  ),
                   userTextForm(),
                   passwordTextForm(),
                   SizedBox(

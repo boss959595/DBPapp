@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class MyStyle {
   double h1 = 30.0, h2 = 18.0;
-  String appName = 'ระบบจัดการคลัง';
+  String appName = 'Engineer Store';
   String myFont = 'Charm';
 
   String urlGetUser =

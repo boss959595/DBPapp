@@ -3,8 +3,10 @@ import 'package:dbpapp/models/equipment_model.dart';
 import 'package:dbpapp/models/user_accout.dart';
 import 'package:dbpapp/screens/my_dialog.dart';
 import 'package:dbpapp/screens/my_style.dart';
+import 'package:dbpapp/screens/search_center.dart';
 import 'package:dbpapp/screens/store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -20,6 +22,14 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
   // Explicit
   EquipmentModel myEquipmentModel;
   String userString, levelString = '', numberString, nameString;
+  String xuserString,xlevelString = '',
+      xkeyString,
+      xnameString,
+      xtypeString,
+      xgroupString,
+      xunitString,
+      xlimitString;
+   
   final formKey = GlobalKey<FormState>();
   UserAccoutModel userAccoutModel;
 
@@ -31,6 +41,233 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
       myEquipmentModel = widget.equipmentModel;
       findUser();
     });
+  }
+
+  Widget barEditEquipment() {
+    return IconButton(
+      icon: Icon(Icons.edit),
+      onPressed: () {
+        showEditEquipment();
+      },
+    );
+  }
+
+  void showEditEquipment() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            titlePadding: EdgeInsets.fromLTRB(0.0, 3.0, 0.0, 3.0),
+            contentPadding: EdgeInsets.fromLTRB(20.0, 2.0, 20.0, 20.0),
+            title: Text(
+              'แก้ไขข้อมูลวัสดุหรืออุปกรณ์',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.red),
+            ),
+            content: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: showEditEquipment1(),
+            ),
+            actions: <Widget>[
+              okEditButton(),
+              cancelButton(),
+            ],
+          );
+        });
+  }
+
+  Widget showEditEquipment1() {
+    return Form(
+      key: formKey,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: 'ชื่อวัสดุหรืออุปกรณ์'sssss,
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.yellow.shade600),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'กรุณาใส่รหัสวัสดุหรืออุปกรณ์';
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) {
+              xkeyString = value.trim();
+            },
+          ),
+          SizedBox(
+            height: 3.0,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: 'ชื่อวัสดุหรืออุปกรณ์',
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.yellow.shade600),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'กรุณาใส่ชื่อวัสดุหรืออุปกรณ์';
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) {
+              xnameString = value.trim();
+            },
+          ),
+          SizedBox(
+            height: 3.0,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: 'ประเภท',
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.yellow.shade600),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'กรุณาใส่ประเภท';
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) {
+              xtypeString = value.trim();
+            },
+          ),
+          SizedBox(
+            height: 3.0,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: 'กลุ่ม',
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.yellow.shade600),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'กรุณาใส่กลุ่ม';
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) {
+              xgroupString = value.trim();
+            },
+          ),
+          SizedBox(
+            height: 3.0,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: 'หน่วยนับ',
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.yellow.shade600),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'กรุณาใส่หน่วยนับ';
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) {
+              xunitString = value.trim();
+            },
+          ),
+          SizedBox(
+            height: 3.0,
+          ),
+          TextFormField(keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              labelText: 'การแจ้งเตือนเมื่อ < หรือ =',
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.yellow.shade600),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'กรุณาใส่จำนวนที่ต้องการแจ้งเตือน';
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) {
+              xlimitString = value.trim();
+            },
+          ),
+          SizedBox(
+            height: 3.0,
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
+  Widget barDeleteEquipment() {
+    return IconButton(
+      icon: Icon(Icons.delete),
+      onPressed: () {
+        showConfirm();
+      },
+    );
+  }
+
+  void showConfirm() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            titlePadding: EdgeInsets.fromLTRB(0.0, 3.0, 0.0, 3.0),
+            contentPadding: EdgeInsets.fromLTRB(20.0, 2.0, 20.0, 20.0),
+            title: Text(
+              'คุณแน่ใจแล้วใช่มั้ยว่าจะลบ',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.red),
+            ),
+            actions: <Widget>[
+              okDelete(),
+              cancelButton(),
+            ],
+          );
+        });
+  }
+
+  Widget okDelete() {
+    return FlatButton(
+        child: Text('ตกลง'),
+        onPressed: () {
+          processOkDelete();
+          Navigator.of(context).pop();
+        });
+  }
+
+  Future<void> processOkDelete() async {
+    String idDeleteEquipment = myEquipmentModel.idEq;
+    int xidDeleteEquipment = int.parse(idDeleteEquipment);
+    //print(idDeleteEquipment);
+
+    String url = 'https://www.androidthai.in.th/boss/deleteEquipmentWhereIdBoss.php?isAdd=true&id_eq=$xidDeleteEquipment';
+    await get(url);
+    MaterialPageRoute materialPageRoute = MaterialPageRoute(builder: (BuildContext context) => SearchCenter());
+    Navigator.of(context).push(materialPageRoute);
   }
 
   Future findUser() async {
@@ -214,6 +451,46 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     );
   }
 
+  Widget okEditButton() {
+    return FlatButton(
+      child: Text('บันทึก'),
+      onPressed: () {
+        if (formKey.currentState.validate()) {
+          formKey.currentState.save();
+          //print('boss = $xkeyString, $xnameString, $xtypeString, $xgroupString, $xunitString, $xlimitString');
+          editEquipment();
+          Navigator.of(context).pop();
+        }
+      },
+    );
+  }
+
+  Future<void> editEquipment()async{
+    String idDeleteEquipment = myEquipmentModel.idEq;
+    int xidDeleteEquipment = int.parse(idDeleteEquipment);
+    int xxlimitString = int.parse(xlimitString);
+
+     print('boss = $xidDeleteEquipment,$xkeyString, $xnameString, $xtypeString, $xgroupString, $xunitString, $xxlimitString');
+
+   String url = 'https://www.androidthai.in.th/boss/editEquipmentWhereIdboss.php/?isAdd=true&id_eq=$xidDeleteEquipment&key=$xkeyString&name=$xnameString&type=$xtypeString&group=$xgroupString&unit=$xunitString&limit=$xxlimitString';
+
+    Response response = await get(url);
+    var result = json.decode(response.body);
+
+     if (result.toString() == 'true') {
+       print('insert Equipment Success');
+      MaterialPageRoute materialPageRoute = MaterialPageRoute(
+        builder: (BuildContext context) => Store(
+          userAccoutModel: userAccoutModel,
+        ),
+      );
+      Navigator.of(context).pushAndRemoveUntil(
+          materialPageRoute, (Route<dynamic> route) => false);
+    } else {
+      normalAlert(context, 'ผิดพลาด', 'กรุณา กรอกค่าแจ้งเตือน มากกว่า 1 ขึ้นไป');
+     }
+  }
+
   Widget cancelButton() {
     return FlatButton(
       child: Text('ยกเลิก'),
@@ -255,7 +532,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     }
 
     String url =
-        'https://www.androidthai.in.th/boss/editEquipmentWhereIdboss.php?isAdd=true&id_eq=$ideq&total=$totalAInt';
+        'https://www.androidthai.in.th/boss/updateEquipmentWhereIdboss.php?isAdd=true&id_eq=$ideq&total=$totalAInt';
     Response response = await get(url);
     var result = json.decode(response.body);
     if (result.toString() == 'true') {
@@ -365,6 +642,10 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
+        actions: <Widget>[
+          levelString == '1' ? barDeleteEquipment() : SizedBox(),
+          levelString == '1' ? barEditEquipment() : SizedBox(),
+        ],
         // actions: <Widget>[testLine()],
         backgroundColor: Colors.orange,
         iconTheme: IconTheme.of(context),

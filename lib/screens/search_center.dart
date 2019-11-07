@@ -194,12 +194,12 @@ class _SearchViewMaterialState extends State<SearchCenter> {
     return IconButton(
       icon: Icon(Icons.add_box),
       onPressed: () {
-        showEditEquipment();
+        showAddEquipment();
       },
     );
   }
 
-  void showEditEquipment() {
+  void showAddEquipment() {
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -213,7 +213,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
             ),
             content: SingleChildScrollView(
               scrollDirection: Axis.vertical,
-              child: showEditEquipment1(),
+              child: showAddEquipment1(),
             ),
             actions: <Widget>[
               okButton(),
@@ -223,7 +223,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
         });
   }
 
-  Widget showEditEquipment1() {
+  Widget showAddEquipment1() {
     return Form(
       key: formKey,
       child: Column(
@@ -391,7 +391,8 @@ class _SearchViewMaterialState extends State<SearchCenter> {
       onPressed: () {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
-          //print('boss = $keyString, $nameString, $typeString, $groupString, $unitString, $limitString, $totalString');
+          print('boss = $keyString, $nameString, $typeString, $groupString, $unitString, $limitString, $totalString');
+          insertEquipment();
           Navigator.of(context).pop();
         }
       },
@@ -407,20 +408,21 @@ class _SearchViewMaterialState extends State<SearchCenter> {
     );
   }
 
-  Future<void> insertEquipment()async{
-    String key = myEquipmentModel.key;
-    String name = myEquipmentModel.name;
-    String type = myEquipmentModel.type;
-    String group = myEquipmentModel.group;
-    String unit = myEquipmentModel.unit;
-    String limit = myEquipmentModel.limit;
-    String total = myEquipmentModel.total;
+   Future<void> insertEquipment()async{
+    //  String xlimitString = limitString;
+    //  String xtotalString = totalString;
+     int xlimitString = int.parse(limitString);
+     int xtotalString = int.parse(totalString);
 
-    String url = '';
+     print('object=$keyString,$nameString,$typeString,$groupString,$unitString,$xlimitString,$xtotalString');
+
+   String url = 'https://www.androidthai.in.th/boss/addEquipmentBoss.php?isAdd=true&key=$keyString&name=$nameString&type=$typeString&group=$groupString&unit=$unitString&limit=$xlimitString&total=$xtotalString';
 
     Response response = await get(url);
     var result = json.decode(response.body);
-    if (result.toString() == 'true') {
+
+     if (result.toString() == 'true') {
+       print('insert Equipment Success');
       MaterialPageRoute materialPageRoute = MaterialPageRoute(
         builder: (BuildContext context) => Store(
           userAccoutModel: userAccoutModel,
@@ -429,9 +431,8 @@ class _SearchViewMaterialState extends State<SearchCenter> {
       Navigator.of(context).pushAndRemoveUntil(
           materialPageRoute, (Route<dynamic> route) => false);
     } else {
-      normalAlert(context, 'ผิดพลาด', 'กรุณาลองใหม่');
-    }
-
+      normalAlert(context, 'ผิดพลาด', 'กรุณา กรอกค่าแจ้งเตือน และ จำนวนของ มากกว่า 1 ขึ้นไป');
+     }
   }
 
   Widget headColumn() {
@@ -469,7 +470,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: <Widget>[addEquipment()],
+        actions: <Widget>[levelString == '1' ? addEquipment() : SizedBox(),],
         iconTheme: IconTheme.of(context),
         backgroundColor: Colors.orange,
         title: Text(

@@ -157,7 +157,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
               ),
             ),
             onTap: () {
-              // print('You click ${filterEquipmentModels[index].name}');
+              //print('You click ${filterEquipmentModels[index].name}');
               MaterialPageRoute materialPageRoute = MaterialPageRoute(
                   builder: (BuildContext context) => ShowDetailCenter(
                         equipmentModel: filterEquipmentModels[index],
@@ -474,7 +474,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
         iconTheme: IconTheme.of(context),
         backgroundColor: Colors.orange,
         title: Text(
-          'วัสดุ และ อุปกรณ์ คลังกลาง',
+          'วัสดุ และ อุปกรณ์', //คลังเครื่องกล
           style: TextStyle(color: Colors.black),
         ),
       ),

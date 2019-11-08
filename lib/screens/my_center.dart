@@ -1,3 +1,5 @@
+import 'package:dbpapp/screens/alertLimit_center.dart';
+import 'package:dbpapp/screens/report_center.dart';
 import 'package:dbpapp/screens/search_center.dart';
 import 'package:flutter/material.dart';
 
@@ -48,7 +50,7 @@ class _MyCenterState extends State<MyCenter> {
         onTap: () {
           MaterialPageRoute materialPageRoute = MaterialPageRoute(
               builder: (BuildContext context) => SearchCenter());
-              Navigator.of(context).push(materialPageRoute);
+          Navigator.of(context).push(materialPageRoute);
         },
       ),
     );
@@ -67,6 +69,11 @@ class _MyCenterState extends State<MyCenter> {
           'แจ้งเตือน',
           style: TextStyle(fontSize: MyStyle().h2),
         ),
+        onTap: () {
+          MaterialPageRoute materialPageRoute = MaterialPageRoute(
+              builder: (BuildContext context) => AlertLimitCenter());
+          Navigator.of(context).push(materialPageRoute);
+        },
       ),
     );
   }
@@ -86,6 +93,11 @@ class _MyCenterState extends State<MyCenter> {
             fontSize: MyStyle().h2,
           ),
         ),
+        onTap: () {
+          MaterialPageRoute materialPageRoute = MaterialPageRoute(
+              builder: (BuildContext context) => ReportCenter());
+          Navigator.of(context).push(materialPageRoute);
+        },
       ),
     );
   }

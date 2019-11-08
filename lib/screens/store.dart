@@ -25,7 +25,7 @@ class _StoreState extends State<Store> {
   UserAccoutModel _userAccoutModel;
   String loginString = '';
   UserModel userModel;
-  List<String> titleAppBars = ['คลังกลาง', 'คลังไฟฟ้า', 'คลังเครื่องกล'];
+  List<String> titleAppBars = ['คลังเครื่องกล', 'คลังไฟฟ้า', 'คลังกลาง'];
   int indexTitleAppBars = 0;
   Widget currentWiget = MyCenter();
   List<Color> colorAppBars = [MyStyle().appBarCenter, MyStyle().appBarElectric, MyStyle().appBarMachine];
@@ -47,11 +47,11 @@ class _StoreState extends State<Store> {
   Widget menuCenterStore() {
     return ListTile(
       leading: Icon(
-        Icons.filter_tilt_shift,
+        Icons.build,
         size: 36.0,
         color: Colors.orange[600],
       ),
-      title: Text('คลังกลาง'),
+      title: Text('คลังเครื่องกล'),
       subtitle: Text('คำอธิบาย'),
       onTap: () {
         setState(() {
@@ -85,11 +85,11 @@ class _StoreState extends State<Store> {
   Widget menuMachineStore() {
     return ListTile(
       leading: Icon(
-        Icons.build,
+        Icons.filter_tilt_shift,
         size: 36.0,
         color: Colors.brown[600],
       ),
-      title: Text('คลังเครื่องกล'),
+      title: Text('คลังกลาง'),
       subtitle: Text('คำอธิบาย'),
       onTap: () {
         setState(() {

@@ -386,7 +386,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
   }
 
   Widget okButton() {
-    return FlatButton(
+    return OutlineButton(
       child: Text('บันทึก'),
       onPressed: () {
         if (formKey.currentState.validate()) {
@@ -395,16 +395,16 @@ class _SearchViewMaterialState extends State<SearchCenter> {
           insertEquipment();
           Navigator.of(context).pop();
         }
-      },
+      },borderSide: BorderSide(color: Colors.lightGreenAccent),
     );
   }
 
   Widget cancelButton() {
-    return FlatButton(
+    return OutlineButton(
       child: Text('ยกเลิก'),
       onPressed: () {
         Navigator.of(context).pop();
-      },
+      },borderSide: BorderSide(color: Colors.red[300],),
     );
   }
 

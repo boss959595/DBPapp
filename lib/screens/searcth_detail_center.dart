@@ -21,15 +21,17 @@ class ShowDetailCenter extends StatefulWidget {
 class _ShowDetailCenterState extends State<ShowDetailCenter> {
   // Explicit
   EquipmentModel myEquipmentModel;
-  String userString, levelString = '', numberString, nameString;
-  String xuserString,xlevelString = '',
+  String userString,
+      levelString = '',
+      numberString,
+      nameString,
       xkeyString,
       xnameString,
       xtypeString,
       xgroupString,
       xunitString,
       xlimitString;
-   
+
   final formKey = GlobalKey<FormState>();
   UserAccoutModel userAccoutModel;
 
@@ -57,8 +59,8 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            titlePadding: EdgeInsets.fromLTRB(0.0, 3.0, 0.0, 3.0),
-            contentPadding: EdgeInsets.fromLTRB(20.0, 2.0, 20.0, 20.0),
+            titlePadding: EdgeInsets.fromLTRB(0.0, 3.0, 0.0, 5.0),
+            contentPadding: EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 0.0),
             title: Text(
               'แก้ไขข้อมูลวัสดุหรืออุปกรณ์',
               textAlign: TextAlign.center,
@@ -83,8 +85,9 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           TextFormField(
+            initialValue: "${myEquipmentModel.key}",
             decoration: InputDecoration(
-              labelText: 'ชื่อวัสดุหรืออุปกรณ์'sssss,
+              labelText: 'รหัสวัสดุหรืออุปกรณ์',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.yellow.shade600),
                 borderRadius: BorderRadius.circular(20.0),
@@ -105,6 +108,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
             height: 3.0,
           ),
           TextFormField(
+            initialValue: "${myEquipmentModel.name}",
             decoration: InputDecoration(
               labelText: 'ชื่อวัสดุหรืออุปกรณ์',
               enabledBorder: OutlineInputBorder(
@@ -127,6 +131,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
             height: 3.0,
           ),
           TextFormField(
+            initialValue: "${myEquipmentModel.type}",
             decoration: InputDecoration(
               labelText: 'ประเภท',
               enabledBorder: OutlineInputBorder(
@@ -149,6 +154,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
             height: 3.0,
           ),
           TextFormField(
+            initialValue: "${myEquipmentModel.group}",
             decoration: InputDecoration(
               labelText: 'กลุ่ม',
               enabledBorder: OutlineInputBorder(
@@ -171,6 +177,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
             height: 3.0,
           ),
           TextFormField(
+            initialValue: "${myEquipmentModel.unit}",
             decoration: InputDecoration(
               labelText: 'หน่วยนับ',
               enabledBorder: OutlineInputBorder(
@@ -192,7 +199,9 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
           SizedBox(
             height: 3.0,
           ),
-          TextFormField(keyboardType: TextInputType.number,
+          TextFormField(
+            initialValue: "${myEquipmentModel.limit}",
+            keyboardType: TextInputType.number,
             decoration: InputDecoration(
               labelText: 'การแจ้งเตือนเมื่อ < หรือ =',
               enabledBorder: OutlineInputBorder(
@@ -218,8 +227,6 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
       ),
     );
   }
-
-
 
   Widget barDeleteEquipment() {
     return IconButton(
@@ -251,12 +258,16 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
   }
 
   Widget okDelete() {
-    return FlatButton(
-        child: Text('ตกลง'),
-        onPressed: () {
-          processOkDelete();
-          Navigator.of(context).pop();
-        });
+    return OutlineButton(
+      child: Text('ตกลง'),
+      onPressed: () {
+        processOkDelete();
+        Navigator.of(context).pop();
+      },
+      borderSide: BorderSide(
+        color: Colors.lightGreenAccent,
+      ),
+    );
   }
 
   Future<void> processOkDelete() async {
@@ -264,9 +275,11 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     int xidDeleteEquipment = int.parse(idDeleteEquipment);
     //print(idDeleteEquipment);
 
-    String url = 'https://www.androidthai.in.th/boss/deleteEquipmentWhereIdBoss.php?isAdd=true&id_eq=$xidDeleteEquipment';
+    String url =
+        'https://www.androidthai.in.th/boss/deleteEquipmentWhereIdBoss.php?isAdd=true&id_eq=$xidDeleteEquipment';
     await get(url);
-    MaterialPageRoute materialPageRoute = MaterialPageRoute(builder: (BuildContext context) => SearchCenter());
+    MaterialPageRoute materialPageRoute =
+        MaterialPageRoute(builder: (BuildContext context) => SearchCenter());
     Navigator.of(context).push(materialPageRoute);
   }
 
@@ -324,12 +337,37 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
   }
 
   Widget myTotal() {
-    return Row(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Text(
-          'จำนวนคงเหลือ : ${myEquipmentModel.total} ${myEquipmentModel.unit}',
-          style: TextStyle(fontSize: MyStyle().h1),
+          'จำนวนคงเหลือ',
+          style: TextStyle(fontSize: 40, color: Colors.lightBlue),
+        ),
+        Stack(
+          children: <Widget>[
+            Text(
+              '${myEquipmentModel.total}',
+              style: TextStyle(
+                fontSize: 40,
+                foreground: Paint()
+                  ..style = PaintingStyle.stroke
+                  ..strokeWidth = 5
+                  ..color = Colors.red,
+              ),
+            ),
+            Text(
+              '${myEquipmentModel.total}',
+              style: TextStyle(
+                fontSize: 40,
+                color: Colors.yellowAccent,
+              ),
+            )
+          ],
+        ),
+        Text(
+          '${myEquipmentModel.unit}',
+          style: TextStyle(fontSize: 40, color: Colors.lightBlue),
         ),
       ],
     );
@@ -452,7 +490,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
   }
 
   Widget okEditButton() {
-    return FlatButton(
+    return OutlineButton(
       child: Text('บันทึก'),
       onPressed: () {
         if (formKey.currentState.validate()) {
@@ -462,23 +500,26 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
           Navigator.of(context).pop();
         }
       },
+      borderSide: BorderSide(color: Colors.lightGreenAccent),
     );
   }
 
-  Future<void> editEquipment()async{
+  Future<void> editEquipment() async {
     String idDeleteEquipment = myEquipmentModel.idEq;
     int xidDeleteEquipment = int.parse(idDeleteEquipment);
     int xxlimitString = int.parse(xlimitString);
 
-     print('boss = $xidDeleteEquipment,$xkeyString, $xnameString, $xtypeString, $xgroupString, $xunitString, $xxlimitString');
+    print(
+        'boss = $xidDeleteEquipment,$xkeyString, $xnameString, $xtypeString, $xgroupString, $xunitString, $xxlimitString');
 
-   String url = 'https://www.androidthai.in.th/boss/editEquipmentWhereIdboss.php/?isAdd=true&id_eq=$xidDeleteEquipment&key=$xkeyString&name=$xnameString&type=$xtypeString&group=$xgroupString&unit=$xunitString&limit=$xxlimitString';
+    String url =
+        'https://www.androidthai.in.th/boss/editEquipmentWhereIdboss.php/?isAdd=true&id_eq=$xidDeleteEquipment&key=$xkeyString&name=$xnameString&type=$xtypeString&group=$xgroupString&unit=$xunitString&limit=$xxlimitString';
 
     Response response = await get(url);
     var result = json.decode(response.body);
 
-     if (result.toString() == 'true') {
-       print('insert Equipment Success');
+    if (result.toString() == 'true') {
+      print('insert Equipment Success');
       MaterialPageRoute materialPageRoute = MaterialPageRoute(
         builder: (BuildContext context) => Store(
           userAccoutModel: userAccoutModel,
@@ -487,21 +528,23 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
       Navigator.of(context).pushAndRemoveUntil(
           materialPageRoute, (Route<dynamic> route) => false);
     } else {
-      normalAlert(context, 'ผิดพลาด', 'กรุณา กรอกค่าแจ้งเตือน มากกว่า 1 ขึ้นไป');
-     }
+      normalAlert(
+          context, 'ผิดพลาด', 'กรุณา กรอกค่าแจ้งเตือน มากกว่า 1 ขึ้นไป');
+    }
   }
 
   Widget cancelButton() {
-    return FlatButton(
+    return OutlineButton(
       child: Text('ยกเลิก'),
       onPressed: () {
         Navigator.of(context).pop();
       },
+      borderSide: BorderSide(color: Colors.red[300]),
     );
   }
 
   Widget okButton(int index) {
-    return FlatButton(
+    return OutlineButton(
       child: Text('บันทึก'),
       onPressed: () {
         if (formKey.currentState.validate()) {
@@ -515,7 +558,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
             decreaseProcess();
           }
         }
-      },
+      },borderSide: BorderSide(color: Colors.lightGreenAccent[400],),
     );
   }
 

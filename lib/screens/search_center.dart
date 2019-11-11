@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'package:dbpapp/models/equipment_model.dart';
 import 'package:dbpapp/models/user_accout.dart';
@@ -9,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'my_dialog.dart';
 
 class SearchCenter extends StatefulWidget {
@@ -44,7 +42,8 @@ class _SearchViewMaterialState extends State<SearchCenter> {
   final formKey = GlobalKey<FormState>();
   UserAccoutModel userAccoutModel;
 
-  String userString,levelString = '',
+  String userString,
+      levelString = '',
       keyString,
       nameString,
       typeString,
@@ -54,14 +53,14 @@ class _SearchViewMaterialState extends State<SearchCenter> {
       totalString;
 
   // Method
-  
+
   @override
   void initState() {
     super.initState();
     setState(() {
       readAllData();
-     myEquipmentModel = widget.equipmentModel;
-     findUser();
+      myEquipmentModel = widget.equipmentModel;
+      findUser();
     });
   }
 
@@ -88,7 +87,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
   }
 
   Future<void> readAllData() async {
-    String url = 'https://www.androidthai.in.th/boss/getAllEquipmentMaster.php';
+    String url = 'https://www.androidthai.in.th/boss/getAllEquipmentBoss.php';
     Response response = await get(url);
     var result = json.decode(response.body);
     print('result = $result');
@@ -339,7 +338,8 @@ class _SearchViewMaterialState extends State<SearchCenter> {
           SizedBox(
             height: 3.0,
           ),
-          TextFormField(keyboardType: TextInputType.number,
+          TextFormField(
+            keyboardType: TextInputType.number,
             decoration: InputDecoration(
               labelText: 'การแจ้งเตือนเมื่อ < หรือ =',
               enabledBorder: OutlineInputBorder(
@@ -361,7 +361,8 @@ class _SearchViewMaterialState extends State<SearchCenter> {
           SizedBox(
             height: 3.0,
           ),
-          TextFormField(keyboardType: TextInputType.number,
+          TextFormField(
+            keyboardType: TextInputType.number,
             decoration: InputDecoration(
               labelText: 'จำนวน',
               enabledBorder: OutlineInputBorder(
@@ -391,11 +392,13 @@ class _SearchViewMaterialState extends State<SearchCenter> {
       onPressed: () {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
-          print('boss = $keyString, $nameString, $typeString, $groupString, $unitString, $limitString, $totalString');
+          print(
+              'boss = $keyString, $nameString, $typeString, $groupString, $unitString, $limitString, $totalString');
           insertEquipment();
           Navigator.of(context).pop();
         }
-      },borderSide: BorderSide(color: Colors.lightGreenAccent),
+      },
+      borderSide: BorderSide(color: Colors.lightGreenAccent),
     );
   }
 
@@ -404,25 +407,30 @@ class _SearchViewMaterialState extends State<SearchCenter> {
       child: Text('ยกเลิก'),
       onPressed: () {
         Navigator.of(context).pop();
-      },borderSide: BorderSide(color: Colors.red[300],),
+      },
+      borderSide: BorderSide(
+        color: Colors.red[300],
+      ),
     );
   }
 
-   Future<void> insertEquipment()async{
+  Future<void> insertEquipment() async {
     //  String xlimitString = limitString;
     //  String xtotalString = totalString;
-     int xlimitString = int.parse(limitString);
-     int xtotalString = int.parse(totalString);
+    int xlimitString = int.parse(limitString);
+    int xtotalString = int.parse(totalString);
 
-     print('object=$keyString,$nameString,$typeString,$groupString,$unitString,$xlimitString,$xtotalString');
+    print(
+        'object=$keyString,$nameString,$typeString,$groupString,$unitString,$xlimitString,$xtotalString');
 
-   String url = 'https://www.androidthai.in.th/boss/addEquipmentBoss.php?isAdd=true&key=$keyString&name=$nameString&type=$typeString&group=$groupString&unit=$unitString&limit=$xlimitString&total=$xtotalString';
+    String url =
+        'https://www.androidthai.in.th/boss/addEquipmentBoss.php?isAdd=true&key=$keyString&name=$nameString&type=$typeString&group=$groupString&unit=$unitString&limit=$xlimitString&total=$xtotalString';
 
     Response response = await get(url);
     var result = json.decode(response.body);
 
-     if (result.toString() == 'true') {
-       print('insert Equipment Success');
+    if (result.toString() == 'true') {
+      print('insert Equipment Success');
       MaterialPageRoute materialPageRoute = MaterialPageRoute(
         builder: (BuildContext context) => Store(
           userAccoutModel: userAccoutModel,
@@ -431,8 +439,9 @@ class _SearchViewMaterialState extends State<SearchCenter> {
       Navigator.of(context).pushAndRemoveUntil(
           materialPageRoute, (Route<dynamic> route) => false);
     } else {
-      normalAlert(context, 'ผิดพลาด', 'กรุณา กรอกค่าแจ้งเตือน และ จำนวนของ มากกว่า 1 ขึ้นไป');
-     }
+      normalAlert(context, 'ผิดพลาด',
+          'กรุณา กรอกค่าแจ้งเตือน และ จำนวนของ มากกว่า 1 ขึ้นไป');
+    }
   }
 
   Widget headColumn() {
@@ -470,7 +479,9 @@ class _SearchViewMaterialState extends State<SearchCenter> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: <Widget>[levelString == '1' ? addEquipment() : SizedBox(),],
+        actions: <Widget>[
+          levelString == '1' ? addEquipment() : SizedBox(),
+        ],
         iconTheme: IconTheme.of(context),
         backgroundColor: Colors.orange,
         title: Text(

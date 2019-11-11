@@ -590,12 +590,13 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     String key = myEquipmentModel.key;
     String group = myEquipmentModel.group;
     String type = myEquipmentModel.type;
+    String nameEqString = myEquipmentModel.name;
     String unit = myEquipmentModel.unit;
     String total = '${myEquipmentModel.total} -> $totalAInt';
     String myProcess = process;
 
     String url =
-        'https://www.androidthai.in.th/boss/addReportBoss.php?isAdd=true&key_re=$key&user_re=$nameString&group_re=$group&type_re=$type&unit_re=$unit&total_re=$total&process_re=$myProcess';
+        'https://www.androidthai.in.th/boss/addReportBoss.php?isAdd=true&key_re=$key&user_re=$nameString&name_re=$nameEqString&group_re=$group&type_re=$type&unit_re=$unit&total_re=$total&process_re=$myProcess';
 
     Response response = await get(url);
     var result = json.decode(response.body);

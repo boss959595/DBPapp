@@ -27,55 +27,110 @@ class _ShowReportDetailCenterState extends State<ShowReportDetailCenter> {
   }
 
   Widget myDate() {
-    return Row(mainAxisAlignment: MainAxisAlignment.start,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Text(
-          'วันที่ :  ${myReportModel.dateEe}',
-          style: TextStyle(fontSize: MyStyle().h2),
+          'วันที่ : ',
+          style: TextStyle(
+              fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
+        ),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Text(
+            '${myReportModel.dateEe}',
+            softWrap: false,
+            overflow: TextOverflow.fade,
+            style: TextStyle(fontSize: MyStyle().h2),
+          ),
         ),
       ],
     );
   }
 
   Widget myGroup() {
-    return Row(mainAxisAlignment: MainAxisAlignment.start,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Text(
-          'กลุ่ม :  ${myReportModel.groupRe}',
-          style: TextStyle(fontSize: MyStyle().h2),
+          'กลุ่ม : ',
+          style: TextStyle(
+              fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
+        ),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Text(
+            '${myReportModel.groupRe}',
+            softWrap: false,
+            overflow: TextOverflow.fade,
+            style: TextStyle(fontSize: MyStyle().h2),
+          ),
         ),
       ],
     );
   }
 
   Widget myType() {
-    return Row(mainAxisAlignment: MainAxisAlignment.start,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Text(
-          'ประเภท :  ${myReportModel.typeRe}',
-          style: TextStyle(fontSize: MyStyle().h2),
+          'ประเภท : ',
+          style: TextStyle(
+              fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
+        ),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Text(
+            '${myReportModel.typeRe}',
+            softWrap: false,
+            overflow: TextOverflow.fade,
+            style: TextStyle(fontSize: MyStyle().h2),
+          ),
         ),
       ],
     );
   }
 
   Widget myName() {
-    return Row(mainAxisAlignment: MainAxisAlignment.start,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Text(
-          'ชื่อวัสดุ/อุปกรณ์ :  ${myReportModel.nameRe}',
-          style: TextStyle(fontSize: MyStyle().h2),
+          'ชื่อวัสดุ/อุปกรณ์ : ',
+          style: TextStyle(
+              fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
+        ),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Text(
+            '${myReportModel.nameRe}',
+            softWrap: false,
+            overflow: TextOverflow.fade,
+            style: TextStyle(fontSize: MyStyle().h2),
+          ),
         ),
       ],
     );
   }
 
   Widget myUser() {
-    return Row(mainAxisAlignment: MainAxisAlignment.start,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Text(
-          'ชื่อผู้ทำรายการ :  ${myReportModel.userRe}',
-          style: TextStyle(fontSize: MyStyle().h2),
+          'ผู้ทำรายการ : ',
+          style: TextStyle(
+              fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
+        ),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Text(
+            '${myReportModel.userRe}',
+            softWrap: false,
+            overflow: TextOverflow.fade,
+            style: TextStyle(fontSize: MyStyle().h2),
+          ),
         ),
       ],
     );

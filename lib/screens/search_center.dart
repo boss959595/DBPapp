@@ -169,8 +169,9 @@ class _SearchViewMaterialState extends State<SearchCenter> {
     );
   }
 
+
   Widget showName(int index) {
-    return Text(
+    return Text( 
       filterEquipmentModels[index].name,
       style: TextStyle(
         fontSize: MyStyle().h2,

@@ -9,6 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:async';
+import 'package:http/http.dart' as http;
+//import 'package:dio/dio.dart';
 
 //stl
 class ShowDetailCenter extends StatefulWidget {
@@ -303,36 +306,75 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     }
   }
 
-  Widget showName() {
+  // Widget contentRow1() {
+  //   return Row(
+  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //     children: <Widget>[myGroup(), myType()],
+  //   );
+  // }
+
+  Widget myGroup() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Text(
-          'ชื่อ    :  ${myEquipmentModel.name}',
-          style: TextStyle(fontSize: MyStyle().h2),
+          'กลุ่ม : ',
+          style: TextStyle(
+              fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
+        ),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Text(
+            '${myEquipmentModel.group}',
+            softWrap: false,
+            overflow: TextOverflow.fade,
+            style: TextStyle(fontSize: MyStyle().h2),
+          ),
         ),
       ],
     );
   }
 
-  Widget contentRow1() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[myGroup(), myType()],
-    );
-  }
-
-  Widget myGroup() {
-    return Text(
-      'กลุ่ม :  ${myEquipmentModel.group}',
-      style: TextStyle(fontSize: MyStyle().h2),
-    );
-  }
-
   Widget myType() {
-    return Text(
-      'ประเภท :  ${myEquipmentModel.type}',
-      style: TextStyle(fontSize: MyStyle().h2),
+    return Row(
+      children: <Widget>[
+        Text(
+          'ประเภท : ',
+          style: TextStyle(
+              fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
+        ),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Text(
+            '${myEquipmentModel.type}',
+            softWrap: false,
+            overflow: TextOverflow.fade,
+            style: TextStyle(fontSize: MyStyle().h2),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget showName() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'ชื่อ : ',
+          style: TextStyle(
+              fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
+        ),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Text(
+            '${myEquipmentModel.name},',
+            softWrap: false,
+            overflow: TextOverflow.fade,
+            style: TextStyle(fontSize: MyStyle().h2),
+          ),
+        ),
+      ],
     );
   }
 
@@ -517,6 +559,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
 
     Response response = await get(url);
     var result = json.decode(response.body);
+    print('XXX = $result');
 
     if (result.toString() == 'true') {
       print('insert Equipment Success');
@@ -558,7 +601,10 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
             decreaseProcess();
           }
         }
-      },borderSide: BorderSide(color: Colors.lightGreenAccent[400],),
+      },
+      borderSide: BorderSide(
+        color: Colors.lightGreenAccent[400],
+      ),
     );
   }
 
@@ -634,22 +680,50 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     }
   }
 
-  Future<void> callLineAPI() async {
+  // Future<void> callLineAPI() async {
+  //   String message =
+  //       '      ชื่อ : ${myEquipmentModel.name} กลุ่ม : ${myEquipmentModel.group} ประเภท : ${myEquipmentModel.type} จำนวนคงเหลือ : ${myEquipmentModel.total} ${myEquipmentModel.unit}';
+
+  //   String url = 'https://notify-api.line.me/api/notify?message=$message';
+  //   Map<String, String> headers = {
+  //     "Content-Type": "application/x-www-form-urlencoded",
+  //     "Authorization": "Bearer s1mg5tgZjQICeHgjLSzGbG39kLbVAsDbTilYurdZ2W4"
+  //   };
+  //   String body = '{"message":"boss test"}';
+
+  //   Response response = await post(url, headers: headers, body: body);
+
+  //   int statusCode = response.statusCode;
+  //   print('statusCode = $statusCode');
+  //   String result = response.body;
+  //   print(result);
+  // }
+
+  Future<http.Response> callLineAPI() async {
     String message =
-        '      ชื่อ : ${myEquipmentModel.name} กลุ่ม : ${myEquipmentModel.group} ประเภท : ${myEquipmentModel.type} จำนวนคงเหลือ : ${myEquipmentModel.total} ${myEquipmentModel.unit}';
+        '\n ชื่อ : ${myEquipmentModel.name} \n กลุ่ม : ${myEquipmentModel.group} \n ประเภท : ${myEquipmentModel.type} \n จำนวนคงเหลือ : ${myEquipmentModel.total} ${myEquipmentModel.unit}';
+    String stickerLineGroup = '1';
+    String stickerLineId = '3';
 
-    String url = 'https://notify-api.line.me/api/notify?message=$message';
-    Map<String, String> headers = {
-      "Content-Type": "application/x-www-form-urlencoded",
-      "Authorization": "Bearer s1mg5tgZjQICeHgjLSzGbG39kLbVAsDbTilYurdZ2W4"
+    var url = 'https://notify-api.line.me/api/notify';
+    Map data = {
+      'message': '$message',
+      'stickerPackageId': '$stickerLineGroup',
+      'stickerId': '$stickerLineId',
     };
-    String body = '{"message":"boss test"}';
 
-    Response response = await post(url, headers: headers, body: body);
-    int statusCode = response.statusCode;
-    print('statusCode = $statusCode');
-    String result = response.body;
-    print(result);
+    //encode Map to JSON = var body = json.encode(data);
+    var body = data;
+
+    var response = await http.post(url,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Authorization": "Bearer zWNuebTnP963lVr9LZTdWmMkVXvnKZOrEmm4jps9jtz",
+        },
+        body: body);
+    print("responseCode ${response.statusCode}");
+    print("responseAll ${response.body}");
+    return response;
   }
 
   void showAlert(int index) {
@@ -704,7 +778,9 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
             padding: EdgeInsets.all(30.0),
             child: Column(
               children: <Widget>[
-                contentRow1(),
+                myGroup(),
+                Divider(),
+                myType(),
                 Divider(),
                 showName(),
                 Divider(),

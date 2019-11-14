@@ -139,18 +139,34 @@ class _SearchViewMaterialState extends State<SearchCenter> {
               child: Container(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 0.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.play_arrow,
-                          color: Colors.grey,
-                        ),
-                        showName(index),
-                      ],
+                    Icon(
+                      Icons.play_arrow,
+                      color: Colors.grey,
                     ),
-                    showTotal(index),
+                    Container(
+                      width: 260.0,
+                      child: Wrap(
+                        children: <Widget>[
+                          Container(
+                              child: Wrap(
+                            children: <Widget>[
+                              showName(index),
+                            ],
+                          )),
+                          // showName(index),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      width: 60.0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          showTotal(index),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -169,9 +185,8 @@ class _SearchViewMaterialState extends State<SearchCenter> {
     );
   }
 
-
   Widget showName(int index) {
-    return Text( 
+    return Text(
       filterEquipmentModels[index].name,
       style: TextStyle(
         fontSize: MyStyle().h2,

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:dbpapp/models/report_model.dart';
-import 'package:dbpapp/screens/my_style.dart';
 import 'package:dbpapp/screens/report_detail_center.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -71,8 +70,16 @@ class _ReportCenterState extends State<ReportCenter> {
         debouncer.run(() {
           setState(() {
             filterReportModels = reportModels
-                .where((u) =>
-                    (u.dateEe.toLowerCase().contains(value.toLowerCase())))
+                .where(
+                  (u) => (u.dateEe.toLowerCase().contains(value.toLowerCase())),
+                )
+                .toList();
+          });
+          setState(() {
+            filterReportModels = reportModels
+                .where(
+                  (u) => (u.nameRe.toLowerCase().contains(value.toLowerCase())),
+                )
                 .toList();
           });
         });
@@ -125,19 +132,30 @@ class _ReportCenterState extends State<ReportCenter> {
               child: Container(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 0.0),
                 child: Row(
-                  
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.play_arrow,
-                          color: Colors.grey,
-                        ),
-                        showDateReport(index),
-                      ],
-                    ),Icon(Icons.keyboard_arrow_right,color: Colors.blue[600],),
-
-                     showNameReport(index),
+                    Icon(
+                      Icons.play_arrow,
+                      color: Colors.grey,
+                    ),
+                    Container(
+                      child: Row(
+                        children: <Widget>[
+                          showDateReport(index),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      Icons.keyboard_arrow_right,
+                      color: Colors.blue[600],
+                    ),
+                    Container(
+                      width: 158,
+                      child: Wrap(
+                        children: <Widget>[
+                          showNameReport(index),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -160,6 +178,7 @@ class _ReportCenterState extends State<ReportCenter> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconTheme.of(context),
         backgroundColor: Colors.orange,
         title: Text(
           'ประวัติการทำรายการ',

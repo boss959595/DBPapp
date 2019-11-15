@@ -6,6 +6,7 @@ import 'package:dbpapp/screens/my_center.dart';
 import 'package:dbpapp/screens/my_electric.dart';
 import 'package:dbpapp/screens/my_machine.dart';
 import 'package:dbpapp/screens/my_style.dart';
+import 'package:dbpapp/screens/register.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,8 +27,11 @@ class _StoreState extends State<Store> {
   List<String> titleAppBars = ['คลังเครื่องกล', 'คลังไฟฟ้า', 'คลังกลาง'];
   int indexTitleAppBars = 0;
   Widget currentWiget = MyCenter();
-  List<Color> colorAppBars = [MyStyle().appBarCenter, MyStyle().appBarElectric, MyStyle().appBarMachine];
-
+  List<Color> colorAppBars = [
+    MyStyle().appBarCenter,
+    MyStyle().appBarElectric,
+    MyStyle().appBarMachine
+  ];
 
   // Method
   void closeDrawer() {
@@ -38,7 +42,7 @@ class _StoreState extends State<Store> {
   void initState() {
     super.initState();
     _userAccoutModel = widget.userAccoutModel;
-    print('userLogin =${_userAccoutModel.user}');
+    print('userLogin =${_userAccoutModel.user},${_userAccoutModel.level}');
     findNameLogin();
   }
 
@@ -99,17 +103,20 @@ class _StoreState extends State<Store> {
     );
   }
 
-  Widget menuChangePassStore() {
+  Widget menuRegisterStore() {
     return ListTile(
       leading: Icon(
-        Icons.lock,
+        Icons.group_add,
         size: 36.0,
         color: Colors.green[600],
       ),
-      title: Text('เปลี่ยนรหัส'),
+      title: Text('สมัครสมาชิก'),
       subtitle: Text('คำอธิบาย'),
       onTap: () {
-        closeDrawer();
+         closeDrawer();
+        MaterialPageRoute materialPageRoute = MaterialPageRoute(
+              builder: (BuildContext context) => Register());
+          Navigator.of(context).push(materialPageRoute);
       },
     );
   }
@@ -141,16 +148,6 @@ class _StoreState extends State<Store> {
         print('loginString = $loginString');
       });
     }
-  }
-
-  Widget spcialButton() {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        iconChangePassword(),
-        iconLogout(),
-      ],
-    );
   }
 
   Widget iconLogout() {
@@ -190,18 +187,12 @@ class _StoreState extends State<Store> {
   }
 
   Widget showLogin() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          'ผู้ใช้ : $loginString',
-          style: TextStyle(
-            color: Colors.orange,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        spcialButton(),
-      ],
+    return Text(
+      '$loginString',
+      style: TextStyle(
+        color: Colors.orange,
+        fontWeight: FontWeight.bold,
+      ),
     );
   }
 
@@ -218,6 +209,16 @@ class _StoreState extends State<Store> {
     );
   }
 
+  Widget spcialButton() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: <Widget>[
+        iconChangePassword(),
+        iconLogout(),
+      ],
+    );
+  }
+
   Widget showHeadDrawer() {
     return DrawerHeader(
       decoration: BoxDecoration(
@@ -229,7 +230,22 @@ class _StoreState extends State<Store> {
       child: Column(
         children: <Widget>[
           showAvatar(),
-          showLogin(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Container(
+                width: 176,
+                child: Wrap(
+                  children: <Widget>[
+                    showLogin(),
+                  ],
+                ),
+              ),
+              Container(
+                child: spcialButton(),
+              ),
+            ],
+          ),
         ],
       ),
     );
@@ -244,8 +260,14 @@ class _StoreState extends State<Store> {
           Divider(),
           menuElectricStore(),
           Divider(),
-          menuMachineStore(),
-          Divider(),
+          SizedBox(
+            height: 180.0,
+          ),
+
+          _userAccoutModel.level == '1' ? Divider() : SizedBox(),
+          //menuRegisterStore(),
+          _userAccoutModel.level == '1' ? menuRegisterStore() : SizedBox(),
+
           // menuChangePassStore(),
           // Divider(),
           // menuLogOutStore(),
@@ -257,9 +279,13 @@ class _StoreState extends State<Store> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(iconTheme: IconTheme.of(context),
+      appBar: AppBar(
+        iconTheme: IconTheme.of(context),
         backgroundColor: colorAppBars[indexTitleAppBars],
-        title: Text(titleAppBars[indexTitleAppBars],style: TextStyle(color: Colors.black),),
+        title: Text(
+          titleAppBars[indexTitleAppBars],
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: currentWiget,
       drawer: showDrawer(),

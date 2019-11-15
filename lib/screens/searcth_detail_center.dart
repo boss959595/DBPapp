@@ -24,8 +24,7 @@ class ShowDetailCenter extends StatefulWidget {
 class _ShowDetailCenterState extends State<ShowDetailCenter> {
   // Explicit
   EquipmentModel myEquipmentModel;
-  String userString,
-      levelString = '',
+  String userString,levelString = '',
       numberString,
       nameString,
       xkeyString,

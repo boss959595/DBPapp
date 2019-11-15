@@ -37,6 +37,7 @@ class _ReportCenterState extends State<ReportCenter> {
   final debouncer = Debouncer(milliseconds: 500);
   final formKey = GlobalKey<FormState>();
   String userString;
+  String processIcon;
 
   // Medthod
   @override
@@ -186,10 +187,10 @@ class _ReportCenterState extends State<ReportCenter> {
         ),
       ),
       body: Column(
-        children: <Widget>[
+        children: <Widget>[ 
           Container(
             padding: EdgeInsets.fromLTRB(25, 5, 25, 5),
-            child: searchTextReport(),
+            child: searchTextReport(), 
           ),
           showReportListView(),
         ],

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dbpapp/models/user_accout.dart';
 import 'package:dbpapp/models/user_model.dart';
+import 'package:dbpapp/screens/change_password.dart';
 import 'package:dbpapp/screens/home.dart';
 import 'package:dbpapp/screens/my_center.dart';
 import 'package:dbpapp/screens/my_electric.dart';
@@ -113,10 +114,10 @@ class _StoreState extends State<Store> {
       title: Text('สมัครสมาชิก'),
       subtitle: Text('คำอธิบาย'),
       onTap: () {
-         closeDrawer();
-        MaterialPageRoute materialPageRoute = MaterialPageRoute(
-              builder: (BuildContext context) => Register());
-          Navigator.of(context).push(materialPageRoute);
+        closeDrawer();
+        MaterialPageRoute materialPageRoute =
+            MaterialPageRoute(builder: (BuildContext context) => Register());
+        Navigator.of(context).push(materialPageRoute);
       },
     );
   }
@@ -182,7 +183,12 @@ class _StoreState extends State<Store> {
         color: Colors.green.shade600,
         size: 36.0,
       ),
-      onPressed: () {},
+      onPressed: () {
+        closeDrawer();
+        MaterialPageRoute materialPageRoute = MaterialPageRoute(
+            builder: (BuildContext context) => ChangePassword());
+        Navigator.of(context).push(materialPageRoute);
+      },
     );
   }
 
@@ -287,6 +293,9 @@ class _StoreState extends State<Store> {
           style: TextStyle(color: Colors.black),
         ),
       ),
+      // body: SingleChildScrollView(
+      //   child: showDrawer(),
+      // ),
       body: currentWiget,
       drawer: showDrawer(),
     );

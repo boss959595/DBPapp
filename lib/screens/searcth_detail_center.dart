@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dbpapp/models/equipment_model.dart';
+import 'package:dbpapp/models/report_model.dart';
 import 'package:dbpapp/models/user_accout.dart';
 import 'package:dbpapp/screens/my_dialog.dart';
 import 'package:dbpapp/screens/my_style.dart';
@@ -11,6 +12,7 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:date_format/date_format.dart';
 //import 'package:dio/dio.dart';
 
 //stl
@@ -23,8 +25,10 @@ class ShowDetailCenter extends StatefulWidget {
 
 class _ShowDetailCenterState extends State<ShowDetailCenter> {
   // Explicit
+  ReportModel myReportModel;
   EquipmentModel myEquipmentModel;
-  String userString,levelString = '',
+  String userString,
+      levelString = '',
       numberString,
       nameString,
       xkeyString,
@@ -615,19 +619,28 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
 
     if (process == '0') {
       totalAInt = totalAInt + numberAInt;
+      String url =
+          'https://www.androidthai.in.th/boss/updateEquipmentWhereIdboss.php?isAdd=true&id_eq=$ideq&total=$totalAInt';
+      Response response = await get(url);
+      var result = json.decode(response.body);
+      if (result.toString() == 'true') {
+        print('EQM success');
+        insertReport('0', totalAInt);
+      } else {
+        normalAlert(context, 'ข้อมูลผิดพลาด', 'กรุณาลองใหม่');
+      }
     } else {
       totalAInt = totalAInt - numberAInt;
-    }
-
-    String url =
-        'https://www.androidthai.in.th/boss/updateEquipmentWhereIdboss.php?isAdd=true&id_eq=$ideq&total=$totalAInt';
-    Response response = await get(url);
-    var result = json.decode(response.body);
-    if (result.toString() == 'true') {
-      print('EQM success');
-      insertReport('0', totalAInt);
-    } else {
-      normalAlert(context, 'ข้อมูลผิดพลาด', 'กรุณาลองใหม่');
+      String url =
+          'https://www.androidthai.in.th/boss/updateEquipmentWhereIdboss.php?isAdd=true&id_eq=$ideq&total=$totalAInt';
+      Response response = await get(url);
+      var result = json.decode(response.body);
+      if (result.toString() == 'true') {
+        print('EQM success');
+        insertReport('1', totalAInt);
+      } else {
+        normalAlert(context, 'ข้อมูลผิดพลาด', 'กรุณาลองใหม่');
+      }
     }
   }
 
@@ -646,6 +659,13 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     Response response = await get(url);
     var result = json.decode(response.body);
     if (result.toString() == 'true') {
+      String limitString = myEquipmentModel.limit;
+      int limitAInt = int.parse(limitString);
+      if (totalAInt <= limitAInt) {
+        // Call limit line api
+        callLineAPI();
+      }
+
       MaterialPageRoute materialPageRoute = MaterialPageRoute(
         builder: (BuildContext context) => Store(
           userAccoutModel: userAccoutModel,
@@ -666,41 +686,20 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     if (numberDecrease > currentTotalAInt) {
       normalAlert(context, 'ผิดพลาด', 'ของมีจำนวนน้อยกว่าที่เบิก');
     } else {
-      int totalAInt = currentTotalAInt - numberDecrease;
-      String limitString = myEquipmentModel.limit;
-      int limitAInt = int.parse(limitString);
+      // int totalAInt = currentTotalAInt - numberDecrease;
 
-      if (totalAInt <= limitAInt) {
-        // Call limit line api
-        callLineAPI();
-      }
       increaseAndDecreaseProcess('1');
-      insertReport('1', totalAInt);
+      // insertReport('1', totalAInt);
     }
   }
 
-  // Future<void> callLineAPI() async {
-  //   String message =
-  //       '      ชื่อ : ${myEquipmentModel.name} กลุ่ม : ${myEquipmentModel.group} ประเภท : ${myEquipmentModel.type} จำนวนคงเหลือ : ${myEquipmentModel.total} ${myEquipmentModel.unit}';
-
-  //   String url = 'https://notify-api.line.me/api/notify?message=$message';
-  //   Map<String, String> headers = {
-  //     "Content-Type": "application/x-www-form-urlencoded",
-  //     "Authorization": "Bearer s1mg5tgZjQICeHgjLSzGbG39kLbVAsDbTilYurdZ2W4"
-  //   };
-  //   String body = '{"message":"boss test"}';
-
-  //   Response response = await post(url, headers: headers, body: body);
-
-  //   int statusCode = response.statusCode;
-  //   print('statusCode = $statusCode');
-  //   String result = response.body;
-  //   print(result);
-  // }
-
   Future<http.Response> callLineAPI() async {
+    String realTime =
+        formatDate(DateTime.now(), [dd, '/', mm, '/', yyyy, ' ', HH, ':', nn]);
+    print('VVVV = ${myEquipmentModel.total}');
+
     String message =
-        '\n ชื่อ : ${myEquipmentModel.name} \n กลุ่ม : ${myEquipmentModel.group} \n ประเภท : ${myEquipmentModel.type} \n จำนวนคงเหลือ : ${myEquipmentModel.total} ${myEquipmentModel.unit}';
+        '\n ขณะนี้มีจำนวนต่ำกว่าที่กำหนด \n\n ลงวันที่ : $realTime \n ชื่อ : ${myEquipmentModel.name} \n กลุ่ม : ${myEquipmentModel.group} \n ประเภท : ${myEquipmentModel.type} \n จำนวนคงเหลือ : ${myEquipmentModel.total} ${myEquipmentModel.unit}';
     String stickerLineGroup = '1';
     String stickerLineId = '3';
 
@@ -717,7 +716,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     var response = await http.post(url,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          "Authorization": "Bearer zWNuebTnP963lVr9LZTdWmMkVXvnKZOrEmm4jps9jtz",
+          "Authorization": "Bearer s1mg5tgZjQICeHgjLSzGbG39kLbVAsDbTilYurdZ2W4",
         },
         body: body);
     print("responseCode ${response.statusCode}");

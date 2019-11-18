@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:dbpapp/models/user_accout.dart';
+import 'package:dbpapp/screens/store.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'my_dialog.dart';
 import 'my_style.dart';
 
 class Register extends StatefulWidget {
@@ -63,6 +65,7 @@ class _RegisterState extends State<Register> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           TextFormField(
+            keyboardType: TextInputType.number,
             decoration: InputDecoration(
               labelText: 'รหัสพนักงาน',
               enabledBorder: OutlineInputBorder(
@@ -159,7 +162,6 @@ class _RegisterState extends State<Register> {
             height: 3.0,
           ),
           TextFormField(
-            keyboardType: TextInputType.number,
             decoration: InputDecoration(
               labelText: 'Email',
               enabledBorder: OutlineInputBorder(
@@ -185,45 +187,55 @@ class _RegisterState extends State<Register> {
             ),
             onSaved: (value) {
               phoneString = value.trim();
-            }
-          ),SizedBox(height: 20.0,),Container(width: 230.0,
-            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: <Widget>[okButton(),
-                cancelButton(),],),
+            },
+          ),
+          SizedBox(
+            height: 20.0,
+          ),
+          Container(
+            width: 230.0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                okButton(),
+                cancelButton(),
+              ],
+            ),
           )
         ],
       ),
     );
   }
 
-  // Future<void> insertUserAndAccout() async {
-  //   //  String xlimitString = limitString;
-  //   //  String xtotalString = totalString;
-  //   int xlimitString = int.parse(limitString);
-  //   int xtotalString = int.parse(totalString);
+  Future<void> insertUserAndAccout() async {
+    // print(
+    //     'object VVV=$keyUserString, $nameString, $departmentString, $sectionString, $devisionString, $emailString, $phoneString');
 
-  //   print(
-  //       'object=$keyString,$nameString,$typeString,$groupString,$unitString,$xlimitString,$xtotalString');
+    String url =
+        'https://www.androidthai.in.th/boss/addUserBoss.php?isAdd=true&employee_id=$keyUserString&name=$nameString&department=$departmentString&section=$sectionString&division=$devisionString&email=$emailString&phone=$phoneString';
 
-  //   String url =
-  //       'https://www.androidthai.in.th/boss/addEquipmentBoss.php?isAdd=true&key=$keyString&name=$nameString&type=$typeString&group=$groupString&unit=$unitString&limit=$xlimitString&total=$xtotalString';
+    Response response = await get(url);
+    var result = json.decode(response.body);
 
-  //   Response response = await get(url);
-  //   var result = json.decode(response.body);
+    String url2 =
+        'https://www.androidthai.in.th/boss/addAccoutBoss.php?isAdd=true&user=$keyUserString&pass=1234';
 
-  //   if (result.toString() == 'true') {
-  //     print('insert Equipment Success');
-  //     MaterialPageRoute materialPageRoute = MaterialPageRoute(
-  //       builder: (BuildContext context) => Store(
-  //         userAccoutModel: userAccoutModel,
-  //       ),
-  //     );
-  //     Navigator.of(context).pushAndRemoveUntil(
-  //         materialPageRoute, (Route<dynamic> route) => false);
-  //   } else {
-  //     normalAlert(context, 'ผิดพลาด',
-  //         'กรุณา กรอกค่าแจ้งเตือน และ จำนวนของ มากกว่า 1 ขึ้นไป');
-  //   }
-  // }
+    Response response2 = await get(url2);
+    var result2 = json.decode(response2.body);
+
+    if (result.toString() == 'true' && result2.toString() == 'true') {
+      print('insert Equipment Success');
+      MaterialPageRoute materialPageRoute = MaterialPageRoute(
+        builder: (BuildContext context) => Store(
+          userAccoutModel: userAccoutModel,
+        ),
+      );
+      Navigator.of(context).pushAndRemoveUntil(
+          materialPageRoute, (Route<dynamic> route) => false);
+    } else {
+      normalAlert(context, 'ผิดพลาด', 'กรุณา แจ้งผู้ดูแลระบบ');
+    }
+  }
 
   Widget okButton() {
     return OutlineButton(
@@ -232,9 +244,8 @@ class _RegisterState extends State<Register> {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
           print(
-
               'boss = $keyUserString, $nameString, $departmentString, $sectionString, $devisionString, $emailString, $phoneString');
-         // insertUserAndAccout()
+          insertUserAndAccout();
           Navigator.of(context).pop();
         }
       },
@@ -258,8 +269,6 @@ class _RegisterState extends State<Register> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: <Widget>[],
-        // actions: <Widget>[testLine()],
         backgroundColor: Colors.orange,
         iconTheme: IconTheme.of(context),
         title: Text(
@@ -267,9 +276,9 @@ class _RegisterState extends State<Register> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: SingleChildScrollView(padding: EdgeInsets.fromLTRB(25.0, 40.0, 25.0, 5.0),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.fromLTRB(25.0, 40.0, 25.0, 5.0),
         child: addRegister(),
-        
       ),
     );
   }

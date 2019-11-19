@@ -1,8 +1,17 @@
 class ReportModel {
-  String idEe, dateEe, keyRe, userRe,nameRe, groupRe, typeRe, unitRe, totalRe, processRe;
+  String idEe,
+      dateEe,
+      keyRe,
+      userRe,
+      nameRe,
+      groupRe,
+      typeRe,
+      unitRe,
+      totalRe,
+      processRe;
 
-  ReportModel(this.idEe, this.dateEe, this.keyRe, this.userRe,this.nameRe, this.groupRe,
-      this.typeRe, this.unitRe, this.totalRe, this.processRe);
+  ReportModel(this.idEe, this.dateEe, this.keyRe, this.userRe, this.nameRe,
+      this.groupRe, this.typeRe, this.unitRe, this.totalRe, this.processRe);
 
   ReportModel.formJSON(Map<String, dynamic> map) {
     idEe = map['id_re'];
@@ -15,5 +24,30 @@ class ReportModel {
     unitRe = map['unit_re'];
     totalRe = map['total_re'];
     processRe = map['process_re'];
+  }
+}
+
+class ReportElectricModel {
+  String idRpEe,
+      dateRpEe,
+      userRpEe,
+      sizeRpEe,
+      setupRpEe,
+      placeRpEe,
+      totalRpEe,
+      processRpEe;
+
+  ReportElectricModel(this.idRpEe, this.dateRpEe, this.userRpEe, this.sizeRpEe,
+      this.setupRpEe, this.placeRpEe, this.totalRpEe, this.processRpEe);
+
+  ReportElectricModel.formJSON(Map<String, dynamic> map) {
+    idRpEe = map['id_rp_ee'];
+    dateRpEe = map['date_rp_ee'];
+    userRpEe = map['user_rp_ee'];
+    sizeRpEe = map['size_rp_ee'];
+    setupRpEe = map['setup_rp_ee'];
+    placeRpEe = map['place_rp_ee'];
+    totalRpEe = map['total_rp_ee'];
+    processRpEe = map['process_rp_ee'];
   }
 }

@@ -69,13 +69,13 @@ class _ReportCenterState extends State<ReportCenter> {
       ),
       onChanged: (value) {
         debouncer.run(() {
-          setState(() {
-            filterReportModels = reportModels
-                .where(
-                  (u) => (u.dateEe.toLowerCase().contains(value.toLowerCase())),
-                )
-                .toList();
-          });
+          // setState(() {
+          //   filterReportModels = reportModels
+          //       .where(
+          //         (u) => (u.dateEe.toLowerCase().contains(value.toLowerCase())),
+          //       )
+          //       .toList();
+          // });
           setState(() {
             filterReportModels = reportModels
                 .where(
@@ -187,10 +187,10 @@ class _ReportCenterState extends State<ReportCenter> {
         ),
       ),
       body: Column(
-        children: <Widget>[ 
+        children: <Widget>[
           Container(
             padding: EdgeInsets.fromLTRB(25, 5, 25, 5),
-            child: searchTextReport(), 
+            child: searchTextReport(),
           ),
           showReportListView(),
         ],

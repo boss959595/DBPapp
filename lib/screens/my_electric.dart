@@ -1,5 +1,5 @@
+import 'package:dbpapp/screens/search_electric.dart';
 import 'package:flutter/material.dart';
-
 import 'my_style.dart';
 
 class MyElectric extends StatefulWidget {
@@ -8,7 +8,6 @@ class MyElectric extends StatefulWidget {
 }
 
 class _MyElectricState extends State<MyElectric> {
-
   // Explicil
   List<String> iconMaterial = [
     'images/matcenter.png',
@@ -28,12 +27,11 @@ class _MyElectricState extends State<MyElectric> {
     'images/his3.png',
   ];
 
-
-   int indexMaterial = 1;
+  int indexMaterial = 1;
 
   // Method
 
-   Widget cardMenu1() {
+  Widget cardMenu1() {
     return Card(
       child: ListTile(
         leading: Container(
@@ -46,6 +44,11 @@ class _MyElectricState extends State<MyElectric> {
           'วัสดุ และ อุปกรณ์',
           style: TextStyle(fontSize: MyStyle().h2),
         ),
+        onTap: () {
+          MaterialPageRoute materialPageRoute = MaterialPageRoute(
+              builder: (BuildContext context) => SearchElectric());
+          Navigator.of(context).push(materialPageRoute);
+        },
       ),
     );
   }
@@ -86,7 +89,7 @@ class _MyElectricState extends State<MyElectric> {
     );
   }
 
-   Widget content() {
+  Widget content() {
     return Container(
       padding: EdgeInsets.only(
         left: 35.0,
@@ -113,14 +116,14 @@ class _MyElectricState extends State<MyElectric> {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         gradient: RadialGradient(
           colors: [Colors.white, Colors.yellowAccent],
-          radius: 1.8,center: Alignment.topCenter,
+          radius: 1.8,
+          center: Alignment.topCenter,
         ),
       ),
       child: Column(

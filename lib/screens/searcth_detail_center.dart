@@ -642,6 +642,13 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
         normalAlert(context, 'ข้อมูลผิดพลาด', 'กรุณาลองใหม่');
       }
     }
+
+    String limitString = myEquipmentModel.limit;
+       int limitAInt = int.parse(limitString);
+      if (totalAInt <= limitAInt) {
+        // Call limit line api
+        callLineAPI(totalAInt);
+      }
   }
 
   Future<void> insertReport(String process, int totalAInt) async {
@@ -659,12 +666,6 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     Response response = await get(url);
     var result = json.decode(response.body);
     if (result.toString() == 'true') {
-      String limitString = myEquipmentModel.limit;
-      int limitAInt = int.parse(limitString);
-      if (totalAInt <= limitAInt) {
-        // Call limit line api
-        callLineAPI();
-      }
 
       MaterialPageRoute materialPageRoute = MaterialPageRoute(
         builder: (BuildContext context) => Store(
@@ -693,13 +694,13 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     }
   }
 
-  Future<http.Response> callLineAPI() async {
+  Future<http.Response> callLineAPI(int totalAInt) async {
     String realTime =
         formatDate(DateTime.now(), [dd, '/', mm, '/', yyyy, ' ', HH, ':', nn]);
-    print('VVVV = ${myEquipmentModel.total}');
+    //print('VVVV = ${totalAInt}');
 
     String message =
-        '\n ขณะนี้มีจำนวนต่ำกว่าที่กำหนด \n\n ลงวันที่ : $realTime \n ชื่อ : ${myEquipmentModel.name} \n กลุ่ม : ${myEquipmentModel.group} \n ประเภท : ${myEquipmentModel.type} \n จำนวนคงเหลือ : ${myEquipmentModel.total} ${myEquipmentModel.unit}';
+        '\n ขณะนี้มีจำนวนต่ำกว่าที่กำหนดคือ ${myEquipmentModel.limit} \n\n ลงวันที่ : $realTime \n ชื่อ : ${myEquipmentModel.name} \n กลุ่ม : ${myEquipmentModel.group} \n ประเภท : ${myEquipmentModel.type} \n จำนวนคงเหลือ : ${totalAInt} ${myEquipmentModel.unit}';
     String stickerLineGroup = '1';
     String stickerLineId = '3';
 

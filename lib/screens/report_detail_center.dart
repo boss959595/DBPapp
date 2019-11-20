@@ -114,6 +114,28 @@ class _ShowReportDetailCenterState extends State<ShowReportDetailCenter> {
     );
   }
 
+  Widget placeName() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'สถานะ : ',
+          style: TextStyle(
+              fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
+        ),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Text(
+            '${myReportModel.statusRe}',
+            softWrap: false,
+            overflow: TextOverflow.fade,
+            style: TextStyle(fontSize: MyStyle().h2),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget myUser() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -207,6 +229,8 @@ class _ShowReportDetailCenterState extends State<ShowReportDetailCenter> {
                 myGroup(),
                 Divider(),
                 myName(),
+                Divider(),
+                placeName(),
                 Divider(),
                 myTotal(),
               ],

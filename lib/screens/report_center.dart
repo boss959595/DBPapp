@@ -57,34 +57,73 @@ class _ReportCenterState extends State<ReportCenter> {
     //findLevel();
   }
 
-  Widget searchTextReport() {
-    return TextField(
-      decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.yellow.shade600),
-          borderRadius: BorderRadius.circular(20.0),
+  Widget searchTextReportDate() {
+    return Container(
+      width: 175.0,
+      child: TextField(
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.yellow.shade600),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          prefixIcon: Icon(Icons.search),
+          hintText: 'ค้นหาตามวันที่',
         ),
-        prefixIcon: Icon(Icons.search),
-        hintText: 'ค้นหา',
-      ),
-      onChanged: (value) {
-        debouncer.run(() {
-          // setState(() {
-          //   filterReportModels = reportModels
-          //       .where(
-          //         (u) => (u.dateEe.toLowerCase().contains(value.toLowerCase())),
-          //       )
-          //       .toList();
-          // });
-          setState(() {
-            filterReportModels = reportModels
-                .where(
-                  (u) => (u.nameRe.toLowerCase().contains(value.toLowerCase())),
-                )
-                .toList();
+        onChanged: (value) {
+          debouncer.run(() {
+            setState(() {
+              filterReportModels = reportModels
+                  .where(
+                    (u) =>
+                        (u.dateEe.toLowerCase().contains(value.toLowerCase())),
+                  )
+                  .toList();
+            });
+            // setState(() {
+            //   filterReportModels = reportModels
+            //       .where(
+            //         (u) => (u.nameRe.toLowerCase().contains(value.toLowerCase())),
+            //       )
+            //       .toList();
+            // });
           });
-        });
-      },
+        },
+      ),
+    );
+  }
+
+  Widget searchTextReportName() {
+    return Container(
+      width: 175.0,
+      child: TextField(
+        decoration: InputDecoration(
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.yellow.shade600),
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          prefixIcon: Icon(Icons.search),
+          hintText: 'ค้นหาตามชื่อ',
+        ),
+        onChanged: (value) {
+          debouncer.run(() {
+            // setState(() {
+            //   filterReportModels = reportModels
+            //       .where(
+            //         (u) => (u.dateEe.toLowerCase().contains(value.toLowerCase())),
+            //       )
+            //       .toList();
+            // });
+            setState(() {
+              filterReportModels = reportModels
+                  .where(
+                    (u) =>
+                        (u.nameRe.toLowerCase().contains(value.toLowerCase())),
+                  )
+                  .toList();
+            });
+          });
+        },
+      ),
     );
   }
 
@@ -188,10 +227,27 @@ class _ReportCenterState extends State<ReportCenter> {
       ),
       body: Column(
         children: <Widget>[
-          Container(
-            padding: EdgeInsets.fromLTRB(25, 5, 25, 5),
-            child: searchTextReport(),
+          Container(padding: EdgeInsets.fromLTRB(3.0, 10.0, 1.0, 5.0),
+            child: Row(
+              children: <Widget>[
+                searchTextReportDate(),
+                SizedBox(
+                  width: 5.0,
+                ),
+                searchTextReportName()
+              ],
+            ),
           ),
+
+          // Container(
+          //   padding: EdgeInsets.fromLTRB(25, 5, 25, 5),
+          //   child: searchTextReportDate(),
+          // ),
+          // Container(
+          //   padding: EdgeInsets.fromLTRB(25, 5, 25, 5),
+          //   child: searchTextReportName(),
+          // ),
+
           showReportListView(),
         ],
       ),

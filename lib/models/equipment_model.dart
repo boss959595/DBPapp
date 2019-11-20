@@ -18,10 +18,10 @@ class EquipmentModel {
 }
 
 class EquipmentElectricModel {
-  String idEqEe, sizeEqEe, setupEqEe, placeEqEe, totalEqEe;
+  String idEqEe, sizeEqEe, setupEqEe, placeEqEe, totalEqEe,limitEqEe;
 
   EquipmentElectricModel(this.idEqEe, this.sizeEqEe, this.setupEqEe,
-      this.placeEqEe, this.totalEqEe);
+      this.placeEqEe, this.totalEqEe,this.limitEqEe);
 
   EquipmentElectricModel.formJSON(Map<String, dynamic> map) {
     idEqEe = map['id_eq_ee'];
@@ -29,5 +29,6 @@ class EquipmentElectricModel {
     setupEqEe = map['setup_eq_ee'];
     placeEqEe = map['place_eq_ee'];
     totalEqEe = map['total_eq_ee'];
+    limitEqEe = map['limit_eq_ee'];
   }
 }

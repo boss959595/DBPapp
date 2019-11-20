@@ -1,8 +1,11 @@
+import 'package:dbpapp/models/user_accout.dart';
 import 'package:dbpapp/screens/search_electric.dart';
 import 'package:flutter/material.dart';
 import 'my_style.dart';
 
 class MyElectric extends StatefulWidget {
+  final UserAccoutModel userAccoutModel;
+  MyElectric({Key key, this.userAccoutModel}) : super(key: key);
   @override
   _MyElectricState createState() => _MyElectricState();
 }

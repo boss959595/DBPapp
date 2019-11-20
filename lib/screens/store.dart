@@ -271,9 +271,10 @@ class _StoreState extends State<Store> {
           ),
 
           _userAccoutModel.level == '1' ? Divider() : SizedBox(),
+          _userAccoutModel.level == '2' ? Divider() : SizedBox(),
           //menuRegisterStore(),
           _userAccoutModel.level == '1' ? menuRegisterStore() : SizedBox(),
-
+          _userAccoutModel.level == '2' ? menuRegisterStore() : SizedBox(),
           // menuChangePassStore(),
           // Divider(),
           // menuLogOutStore(),

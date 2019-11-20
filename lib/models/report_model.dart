@@ -8,10 +8,11 @@ class ReportModel {
       typeRe,
       unitRe,
       totalRe,
-      processRe;
+      processRe,
+      statusRe;
 
   ReportModel(this.idEe, this.dateEe, this.keyRe, this.userRe, this.nameRe,
-      this.groupRe, this.typeRe, this.unitRe, this.totalRe, this.processRe);
+      this.groupRe, this.typeRe, this.unitRe, this.totalRe, this.processRe,this.statusRe);
 
   ReportModel.formJSON(Map<String, dynamic> map) {
     idEe = map['id_re'];
@@ -24,6 +25,7 @@ class ReportModel {
     unitRe = map['unit_re'];
     totalRe = map['total_re'];
     processRe = map['process_re'];
+    statusRe = map['status_re'];
   }
 }
 
@@ -35,10 +37,11 @@ class ReportElectricModel {
       setupRpEe,
       placeRpEe,
       totalRpEe,
-      processRpEe;
+      processRpEe,
+      statusReEe;
 
   ReportElectricModel(this.idRpEe, this.dateRpEe, this.userRpEe, this.sizeRpEe,
-      this.setupRpEe, this.placeRpEe, this.totalRpEe, this.processRpEe);
+      this.setupRpEe, this.placeRpEe, this.totalRpEe, this.processRpEe,this.statusReEe);
 
   ReportElectricModel.formJSON(Map<String, dynamic> map) {
     idRpEe = map['id_rp_ee'];
@@ -49,5 +52,6 @@ class ReportElectricModel {
     placeRpEe = map['place_rp_ee'];
     totalRpEe = map['total_rp_ee'];
     processRpEe = map['process_rp_ee'];
+    statusReEe = map['status_rp_ee'];
   }
 }

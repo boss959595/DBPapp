@@ -1,55 +1,68 @@
 import 'dart:convert';
+
 import 'package:dbpapp/models/equipment_model.dart';
 import 'package:dbpapp/models/report_model.dart';
 import 'package:dbpapp/models/user_accout.dart';
-import 'package:dbpapp/screens/my_dialog.dart';
-import 'package:dbpapp/screens/my_style.dart';
-import 'package:dbpapp/screens/search_center.dart';
+import 'package:dbpapp/screens/search_electric.dart';
 import 'package:dbpapp/screens/store.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:async';
-import 'package:http/http.dart' as http;
 import 'package:date_format/date_format.dart';
-//import 'package:dio/dio.dart';
+import 'my_dialog.dart';
+import 'my_electric.dart';
+import 'my_style.dart';
+import 'package:http/http.dart' as http;
 
-//stl
-class ShowDetailCenter extends StatefulWidget {
-  final EquipmentModel equipmentModel;
-  ShowDetailCenter({Key key, this.equipmentModel}) : super(key: key);
+class ShowDetailElectric extends StatefulWidget {
+  final EquipmentElectricModel equipmentElectricModel;
+  ShowDetailElectric({Key key, this.equipmentElectricModel}) : super(key: key);
   @override
-  _ShowDetailCenterState createState() => _ShowDetailCenterState();
+  _ShowDetailElectricState createState() => _ShowDetailElectricState();
 }
 
-class _ShowDetailCenterState extends State<ShowDetailCenter> {
+class _ShowDetailElectricState extends State<ShowDetailElectric> {
   // Explicit
-  ReportModel myReportModel;
-  EquipmentModel myEquipmentModel;
+  ReportElectricModel myReportElectricModel;
+  EquipmentElectricModel myEquipmentElectricModel;
   String userString,
       levelString = '',
-      numberString,
-      nameString,
-      xkeyString,
-      xnameString,
-      xtypeString,
-      xgroupString,
-      xunitString,
-      xlimitString,
-      placeString='นำเข้า';
+      sizeString,
+      setupString,
+      placeString,
+      limitString,numberString,nameString,placeStatusString='นำเข้า';
 
   final formKey = GlobalKey<FormState>();
   UserAccoutModel userAccoutModel;
 
-  // Method
+  // Medthod
   @override
   void initState() {
     super.initState();
     setState(() {
-      myEquipmentModel = widget.equipmentModel;
+      myEquipmentElectricModel = widget.equipmentElectricModel;
       findUser();
     });
+  }
+
+  Future findUser() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    userString = sharedPreferences.getString('User');
+    print(userString);
+    findLevel();
+  }
+
+  Future findLevel() async {
+    String url = '${MyStyle().urlGetUser}$userString';
+    Response response = await get(url);
+    var result = json.decode(response.body);
+    print(result);
+    for (var map in result) {
+      userAccoutModel = UserAccoutModel.fromJSON(map);
+      setState(() {
+        levelString = userAccoutModel.level;
+      });
+    }
   }
 
   Widget barEditEquipment() {
@@ -92,9 +105,9 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           TextFormField(
-            initialValue: "${myEquipmentModel.key}",
+            initialValue: "${myEquipmentElectricModel.sizeEqEe}",
             decoration: InputDecoration(
-              labelText: 'รหัสวัสดุหรืออุปกรณ์',
+              labelText: 'ขนาด Motor',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.yellow.shade600),
                 borderRadius: BorderRadius.circular(20.0),
@@ -102,22 +115,22 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
             ),
             validator: (value) {
               if (value.isEmpty) {
-                return 'กรุณาใส่รหัสวัสดุหรืออุปกรณ์';
+                return 'กรุณาใส่ ขนาด Motor';
               } else {
                 return null;
               }
             },
             onSaved: (value) {
-              xkeyString = value.trim();
+              sizeString = value.trim();
             },
           ),
           SizedBox(
             height: 3.0,
           ),
           TextFormField(
-            initialValue: "${myEquipmentModel.name}",
+            initialValue: "${myEquipmentElectricModel.setupEqEe}",
             decoration: InputDecoration(
-              labelText: 'ชื่อวัสดุหรืออุปกรณ์',
+              labelText: 'ลักษณะการติดตั้ง',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.yellow.shade600),
                 borderRadius: BorderRadius.circular(20.0),
@@ -125,22 +138,22 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
             ),
             validator: (value) {
               if (value.isEmpty) {
-                return 'กรุณาใส่ชื่อวัสดุหรืออุปกรณ์';
+                return 'กรุณาใส่ ลักษณะการติดตั้ง';
               } else {
                 return null;
               }
             },
             onSaved: (value) {
-              xnameString = value.trim();
+              setupString = value.trim();
             },
           ),
           SizedBox(
             height: 3.0,
           ),
           TextFormField(
-            initialValue: "${myEquipmentModel.type}",
+            initialValue: "${myEquipmentElectricModel.placeEqEe}",
             decoration: InputDecoration(
-              labelText: 'ประเภท',
+              labelText: 'สถานที่ใช้งาน',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.yellow.shade600),
                 borderRadius: BorderRadius.circular(20.0),
@@ -148,67 +161,20 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
             ),
             validator: (value) {
               if (value.isEmpty) {
-                return 'กรุณาใส่ประเภท';
+                return 'กรุณาใส่ สถานที่ใช้งาน';
               } else {
                 return null;
               }
             },
             onSaved: (value) {
-              xtypeString = value.trim();
+              placeString = value.trim();
             },
           ),
           SizedBox(
             height: 3.0,
           ),
           TextFormField(
-            initialValue: "${myEquipmentModel.group}",
-            decoration: InputDecoration(
-              labelText: 'กลุ่ม',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.yellow.shade600),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-            ),
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'กรุณาใส่กลุ่ม';
-              } else {
-                return null;
-              }
-            },
-            onSaved: (value) {
-              xgroupString = value.trim();
-            },
-          ),
-          SizedBox(
-            height: 3.0,
-          ),
-          TextFormField(
-            initialValue: "${myEquipmentModel.unit}",
-            decoration: InputDecoration(
-              labelText: 'หน่วยนับ',
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.yellow.shade600),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-            ),
-            validator: (value) {
-              if (value.isEmpty) {
-                return 'กรุณาใส่หน่วยนับ';
-              } else {
-                return null;
-              }
-            },
-            onSaved: (value) {
-              xunitString = value.trim();
-            },
-          ),
-          SizedBox(
-            height: 3.0,
-          ),
-          TextFormField(
-            initialValue: "${myEquipmentModel.limit}",
-            keyboardType: TextInputType.number,
+            initialValue: "${myEquipmentElectricModel.limitEqEe}",
             decoration: InputDecoration(
               labelText: 'การแจ้งเตือนเมื่อ < หรือ =',
               enabledBorder: OutlineInputBorder(
@@ -224,14 +190,61 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
               }
             },
             onSaved: (value) {
-              xlimitString = value.trim();
+              limitString = value.trim();
             },
-          ),
-          SizedBox(
-            height: 3.0,
           ),
         ],
       ),
+    );
+  }
+
+  Widget okEditButton() {
+    return OutlineButton(
+      child: Text('บันทึก'),
+      onPressed: () {
+        if (formKey.currentState.validate()) {
+          formKey.currentState.save();
+          editEquipment();
+          Navigator.of(context).pop();
+        }
+      },
+      borderSide: BorderSide(color: Colors.lightGreenAccent),
+    );
+  }
+
+  Future<void> editEquipment() async {
+    // print(
+    //     'boss = ${myEquipmentElectricModel.idEqEe},$sizeString, $setupString, $placeString, $limitString');
+
+    String url =
+        'https://www.androidthai.in.th/boss/editEquipmentWhereIdElectric.php/?isAdd=true&id_eq_ee=${myEquipmentElectricModel.idEqEe}&size_eq_ee=$sizeString&setup_eq_ee=$setupString&place_eq_ee=$placeString&total_eq_ee=${myEquipmentElectricModel.totalEqEe}&limit_eq_ee=$limitString';
+
+    Response response = await get(url);
+    var result = json.decode(response.body);
+    print('XXX = $result');
+
+    if (result.toString() == 'true') {
+      print('insert Equipment Success');
+      MaterialPageRoute materialPageRoute = MaterialPageRoute(
+        builder: (BuildContext context) => Store(
+          userAccoutModel: userAccoutModel,
+        ),
+      );
+      Navigator.of(context).pushAndRemoveUntil(
+          materialPageRoute, (Route<dynamic> route) => false);
+    } else {
+      normalAlert(
+          context, 'ผิดพลาด', 'กรุณา กรอกค่าแจ้งเตือน มากกว่า 1 ขึ้นไป');
+    }
+  }
+
+  Widget cancelButton() {
+    return OutlineButton(
+      child: Text('ยกเลิก'),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+      borderSide: BorderSide(color: Colors.red[300]),
     );
   }
 
@@ -278,58 +291,28 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
   }
 
   Future<void> processOkDelete() async {
-    String idDeleteEquipment = myEquipmentModel.idEq;
-    int xidDeleteEquipment = int.parse(idDeleteEquipment);
-    //print(idDeleteEquipment);
 
     String url =
-        'https://www.androidthai.in.th/boss/deleteEquipmentWhereIdBoss.php?isAdd=true&id_eq=$xidDeleteEquipment';
+        'https://www.androidthai.in.th/boss/deleteEquipmentWhereIdBoss.php?isAdd=true&id=${myEquipmentElectricModel.idEqEe}}';
     await get(url);
     MaterialPageRoute materialPageRoute =
-        MaterialPageRoute(builder: (BuildContext context) => SearchCenter());
+        MaterialPageRoute(builder: (BuildContext context) => SearchElectric());
     Navigator.of(context).push(materialPageRoute);
   }
-
-  Future findUser() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    userString = sharedPreferences.getString('User');
-    print(userString);
-    findLevel();
-  }
-
-  Future findLevel() async {
-    String url = '${MyStyle().urlGetUser}$userString';
-    Response response = await get(url);
-    var result = json.decode(response.body);
-    print(result);
-    for (var map in result) {
-      userAccoutModel = UserAccoutModel.fromJSON(map);
-      setState(() {
-        levelString = userAccoutModel.level;
-      });
-    }
-  }
-
-  // Widget contentRow1() {
-  //   return Row(
-  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //     children: <Widget>[myGroup(), myType()],
-  //   );
-  // }
 
   Widget myGroup() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Text(
-          'กลุ่ม : ',
+          'ขนาด Motor : ',
           style: TextStyle(
               fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
         ),
         Flexible(
           fit: FlexFit.loose,
           child: Text(
-            '${myEquipmentModel.group}',
+            '${myEquipmentElectricModel.sizeEqEe}',
             softWrap: false,
             overflow: TextOverflow.fade,
             style: TextStyle(fontSize: MyStyle().h2),
@@ -343,14 +326,14 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     return Row(
       children: <Widget>[
         Text(
-          'ประเภท : ',
+          'ลักษณะการติดตั้ง : ',
           style: TextStyle(
               fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
         ),
         Flexible(
           fit: FlexFit.loose,
           child: Text(
-            '${myEquipmentModel.type}',
+            '${myEquipmentElectricModel.setupEqEe}',
             softWrap: false,
             overflow: TextOverflow.fade,
             style: TextStyle(fontSize: MyStyle().h2),
@@ -365,14 +348,14 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Text(
-          'ชื่อ : ',
+          'สถานที่ใช้งาน : ',
           style: TextStyle(
               fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
         ),
         Flexible(
           fit: FlexFit.loose,
           child: Text(
-            '${myEquipmentModel.name},',
+            '${myEquipmentElectricModel.placeEqEe},',
             softWrap: false,
             overflow: TextOverflow.fade,
             style: TextStyle(fontSize: MyStyle().h2),
@@ -393,7 +376,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
         Stack(
           children: <Widget>[
             Text(
-              '${myEquipmentModel.total}',
+              '${myEquipmentElectricModel.totalEqEe}',
               style: TextStyle(
                 fontSize: 40,
                 foreground: Paint()
@@ -403,7 +386,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
               ),
             ),
             Text(
-              '${myEquipmentModel.total}',
+              '${myEquipmentElectricModel.totalEqEe}',
               style: TextStyle(
                 fontSize: 40,
                 color: Colors.yellowAccent,
@@ -412,7 +395,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
           ],
         ),
         Text(
-          '${myEquipmentModel.unit}',
+          'EA',
           style: TextStyle(fontSize: 40, color: Colors.lightBlue),
         ),
       ],
@@ -556,63 +539,8 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
         }
       },
       onSaved: (value) {
-        placeString = value.trim();
+        placeStatusString = value.trim();
       },
-    );
-  }
-
-  Widget okEditButton() {
-    return OutlineButton(
-      child: Text('บันทึก'),
-      onPressed: () {
-        if (formKey.currentState.validate()) {
-          formKey.currentState.save();
-          //print('boss = $xkeyString, $xnameString, $xtypeString, $xgroupString, $xunitString, $xlimitString');
-          editEquipment();
-          Navigator.of(context).pop();
-        }
-      },
-      borderSide: BorderSide(color: Colors.lightGreenAccent),
-    );
-  }
-
-  Future<void> editEquipment() async {
-    String idDeleteEquipment = myEquipmentModel.idEq;
-    int xidDeleteEquipment = int.parse(idDeleteEquipment);
-    int xxlimitString = int.parse(xlimitString);
-
-    print(
-        'tiwz = $xidDeleteEquipment,$xkeyString, $xnameString, $xtypeString, $xgroupString, $xunitString, $xxlimitString');
-
-    String url =
-        'https://www.androidthai.in.th/boss/editEquipmentWhereIdboss.php/?isAdd=true&id_eq=$xidDeleteEquipment&key=$xkeyString&name=$xnameString&type=$xtypeString&group=$xgroupString&unit=$xunitString&limit=$xxlimitString';
-
-    Response response = await get(url);
-    var result = json.decode(response.body);
-    print('XXX = $result');
-
-    if (result.toString() == 'true') {
-      print('insert Equipment Success');
-      MaterialPageRoute materialPageRoute = MaterialPageRoute(
-        builder: (BuildContext context) => Store(
-          userAccoutModel: userAccoutModel,
-        ),
-      );
-      Navigator.of(context).pushAndRemoveUntil(
-          materialPageRoute, (Route<dynamic> route) => false);
-    } else {
-      normalAlert(
-          context, 'ผิดพลาด', 'กรุณา กรอกค่าแจ้งเตือน มากกว่า 1 ขึ้นไป');
-    }
-  }
-
-  Widget cancelButton() {
-    return OutlineButton(
-      child: Text('ยกเลิก'),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-      borderSide: BorderSide(color: Colors.red[300]),
     );
   }
 
@@ -639,15 +567,15 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
   }
 
   Future<void> increaseAndDecreaseProcess(String process) async {
-    String ideq = myEquipmentModel.idEq;
-    String totalString = myEquipmentModel.total;
+    String idEqEe = myEquipmentElectricModel.idEqEe;
+    String totalString = myEquipmentElectricModel.totalEqEe;
     int totalAInt = int.parse(totalString);
     int numberAInt = int.parse(numberString);
 
     if (process == '0') {
       totalAInt = totalAInt + numberAInt;
       String url =
-          'https://www.androidthai.in.th/boss/updateEquipmentWhereIdboss.php?isAdd=true&id_eq=$ideq&total=$totalAInt';
+          'https://www.androidthai.in.th/boss/updateEquipmentWhereIdboss.php?isAdd=true&id_eq=$idEqEe&total=$totalAInt';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
@@ -659,7 +587,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     } else {
       totalAInt = totalAInt - numberAInt;
       String url =
-          'https://www.androidthai.in.th/boss/updateEquipmentWhereIdboss.php?isAdd=true&id_eq=$ideq&total=$totalAInt';
+          'https://www.androidthai.in.th/boss/updateEquipmentWhereIdboss.php?isAdd=true&id_eq=$idEqEe&total=$totalAInt';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
@@ -670,7 +598,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
       }
     }
 
-    String limitString = myEquipmentModel.limit;
+    String limitString = myEquipmentElectricModel.limitEqEe;
     int limitAInt = int.parse(limitString);
     if (totalAInt <= limitAInt) {
       // Call limit line api
@@ -679,18 +607,17 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
   }
 
   Future<void> insertReport(String process, int totalAInt) async {
-    String key = myEquipmentModel.key;
-    String group = myEquipmentModel.group;
-    String type = myEquipmentModel.type;
-    String nameEqString = myEquipmentModel.name;
-    String unit = myEquipmentModel.unit;
-    String total = '${myEquipmentModel.total} -> $totalAInt';
+    String user = nameString;
+    String size = myEquipmentElectricModel.sizeEqEe;
+    String setup = myEquipmentElectricModel.setupEqEe;
+    String place = myEquipmentElectricModel.placeEqEe;
+    String total = '${myEquipmentElectricModel.totalEqEe} -> $totalAInt';
     String myProcess = process;
 
-    if (process == 1) {
+    if (myProcess == 1) {
       
       String url =
-          'https://www.androidthai.in.th/boss/addReportBoss.php?isAdd=true&key_re=$key&user_re=$nameString&name_re=$nameEqString&group_re=$group&type_re=$type&unit_re=$unit&total_re=$total&process_re=$myProcess&status_re=$placeString';
+          'https://www.androidthai.in.th/boss/addReportElectric.php?isAdd=true&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$myProcess&status_rp_ee=$placeStatusString';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
@@ -706,7 +633,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
       }
     } else {
       String url =
-          'https://www.androidthai.in.th/boss/addReportBoss.php?isAdd=true&key_re=$key&user_re=$nameString&name_re=$nameEqString&group_re=$group&type_re=$type&unit_re=$unit&total_re=$total&process_re=$myProcess&status_re=$placeString';
+          'https://www.androidthai.in.th/boss/addReportElectric.php?isAdd=true&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$myProcess&status_rp_ee=$placeStatusString';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
@@ -724,7 +651,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
   }
 
   Future<void> decreaseProcess() async {
-    String currentTotal = myEquipmentModel.total;
+    String currentTotal = myEquipmentElectricModel.totalEqEe;
     int currentTotalAInt = int.parse(currentTotal);
     int numberDecrease = int.parse(numberString);
 
@@ -744,7 +671,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     //print('VVVV = ${totalAInt}');
 
     String message =
-        '\n ขณะนี้มีจำนวนต่ำกว่าที่กำหนดคือ ${myEquipmentModel.limit} \n\n ลงวันที่ : $realTime \n ชื่อ : ${myEquipmentModel.name} \n กลุ่ม : ${myEquipmentModel.group} \n ประเภท : ${myEquipmentModel.type} \n จำนวนคงเหลือ : ${totalAInt} ${myEquipmentModel.unit}';
+        '\n ขณะนี้มีจำนวนต่ำกว่าที่กำหนดคือ ${myEquipmentElectricModel.limitEqEe} \n\n ลงวันที่ : $realTime \n ขนาด Motor : ${myEquipmentElectricModel.sizeEqEe} \n การติดตั้ง : ${myEquipmentElectricModel.setupEqEe} \n สถานที่ใช้งาน : ${myEquipmentElectricModel.placeEqEe} \n จำนวนคงเหลือ : ${totalAInt} EA';
     String stickerLineGroup = '1';
     String stickerLineId = '3';
 
@@ -769,6 +696,8 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     return response;
   }
 
+  
+
   void showAlert(int index) {
     showDialog(
         context: context,
@@ -789,26 +718,17 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
         });
   }
 
-  // Widget testLine() {
-  //   return IconButton(
-  //     icon: Icon(Icons.android),
-  //     onPressed: () {
-  //       callLineAPI();
-  //     },
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         actions: <Widget>[
-          levelString == '1' ? barDeleteEquipment() : SizedBox(),
-          levelString == '1' ? barEditEquipment() : SizedBox(),
+             levelString == '2' ? barDeleteEquipment() : SizedBox(),
+          levelString == '2' ? barEditEquipment() : SizedBox(),
         ],
         // actions: <Widget>[testLine()],
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.yellowAccent,
         iconTheme: IconTheme.of(context),
         title: Text(
           'รายละเอียด',
@@ -821,17 +741,17 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
             padding: EdgeInsets.all(30.0),
             child: Column(
               children: <Widget>[
-                myGroup(),
+                  myGroup(),
                 Divider(),
-                myType(),
+                   myType(),
                 Divider(),
-                showName(),
+                   showName(),
                 Divider(),
-                myTotal(),
+                    myTotal(),
               ],
             ),
           ),
-          levelString == '1' ? myButton() : SizedBox(),
+             levelString == '2' ? myButton() : SizedBox(),
         ],
       ),
     );

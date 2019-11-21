@@ -26,6 +26,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
   EquipmentElectricModel myEquipmentElectricModel;
   String userString,
       levelString = '',
+      keyString,
       sizeString,
       setupString,
       placeString,
@@ -123,7 +124,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
               }
             },
             onSaved: (value) {
-              sizeString = value.trim();
+              keyString = value.trim();
             },
           ),
           SizedBox(
@@ -238,11 +239,11 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
   }
 
   Future<void> editEquipment() async {
-    // print(
-    //     'boss = ${myEquipmentElectricModel.idEqEe},$sizeString, $setupString, $placeString, $limitString');
+     print(
+        'bossx = ${myEquipmentElectricModel.idEqEe},$sizeString, $setupString, $placeString, $limitString , $keyString');
 
     String url =
-        'https://www.androidthai.in.th/boss/editEquipmentWhereIdElectric.php/?isAdd=true&id_eq_ee=${myEquipmentElectricModel.idEqEe}&size_eq_ee=$sizeString&setup_eq_ee=$setupString&place_eq_ee=$placeString&total_eq_ee=${myEquipmentElectricModel.totalEqEe}&limit_eq_ee=$limitString';
+        'https://www.androidthai.in.th/boss/editEquipmentWhereIdElectric.php/?isAdd=true&id_eq_ee=${myEquipmentElectricModel.idEqEe}&key_eq_ee=$keyString&size_eq_ee=$sizeString&setup_eq_ee=$setupString&place_eq_ee=$placeString&total_eq_ee=${myEquipmentElectricModel.totalEqEe}&limit_eq_ee=$limitString';
 
     Response response = await get(url);
     var result = json.decode(response.body);
@@ -655,6 +656,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
 
   Future<void> insertReport(String process, int totalAInt) async {
     String user = nameString;
+    String key = myEquipmentElectricModel.keyEqEe;
     String size = myEquipmentElectricModel.sizeEqEe;
     String setup = myEquipmentElectricModel.setupEqEe;
     String place = myEquipmentElectricModel.placeEqEe;
@@ -663,7 +665,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
 
     if (myProcess == 1) {
       String url =
-          'https://www.androidthai.in.th/boss/addReportElectric.php?isAdd=true&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$myProcess&status_rp_ee=$placeStatusString';
+          'https://www.androidthai.in.th/boss/addReportElectric.php?isAdd=true&key_rp_ee=$key&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$myProcess&status_rp_ee=$placeStatusString';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
@@ -675,7 +677,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
       }
     } else {
       String url =
-          'https://www.androidthai.in.th/boss/addReportElectric.php?isAdd=true&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$myProcess&status_rp_ee=$placeStatusString';
+          'https://www.androidthai.in.th/boss/addReportElectric.php?isAdd=true&key_rp_ee=$key&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$myProcess&status_rp_ee=$placeStatusString';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {

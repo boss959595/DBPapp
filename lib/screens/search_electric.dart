@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-
 import 'package:dbpapp/models/equipment_model.dart';
 import 'package:dbpapp/models/user_accout.dart';
 import 'package:dbpapp/screens/search_detail_electric.dart';

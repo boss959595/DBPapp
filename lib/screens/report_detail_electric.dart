@@ -31,6 +31,7 @@ class _ReportDetailElectricState extends State<ReportDetailElectric> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     userString = sharedPreferences.getString('User');
     print(userString);
+    print('BBB = ${myReportElectricModel.keyRpEe}');
   }
 
   Widget myDate() {
@@ -244,6 +245,8 @@ class _ReportDetailElectricState extends State<ReportDetailElectric> {
             child: Column(
               children: <Widget>[
                 myDate(),
+                Divider(),
+                myKey(),
                 Divider(),
                 myUser(),
                 Divider(),

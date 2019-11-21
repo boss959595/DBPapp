@@ -1,7 +1,9 @@
 import 'package:dbpapp/models/user_accout.dart';
+import 'package:dbpapp/screens/alertLimit_electric.dart';
 import 'package:dbpapp/screens/search_electric.dart';
 import 'package:flutter/material.dart';
 import 'my_style.dart';
+import 'report_electric.dart';
 
 class MyElectric extends StatefulWidget {
   final UserAccoutModel userAccoutModel;
@@ -68,7 +70,11 @@ class _MyElectricState extends State<MyElectric> {
         title: Text(
           'แจ้งเตือน',
           style: TextStyle(fontSize: MyStyle().h2),
-        ),
+        ),onTap: () {
+          MaterialPageRoute materialPageRoute = MaterialPageRoute(
+              builder: (BuildContext context) => AlertLimitElectric());
+          Navigator.of(context).push(materialPageRoute);
+        },
       ),
     );
   }
@@ -87,7 +93,11 @@ class _MyElectricState extends State<MyElectric> {
           style: TextStyle(
             fontSize: MyStyle().h2,
           ),
-        ),
+        ),onTap: () {
+          MaterialPageRoute materialPageRoute = MaterialPageRoute(
+              builder: (BuildContext context) => ReportElectric());
+          Navigator.of(context).push(materialPageRoute);
+        },
       ),
     );
   }

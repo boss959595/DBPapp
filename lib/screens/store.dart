@@ -16,6 +16,7 @@ class Store extends StatefulWidget {
   final UserAccoutModel userAccoutModel;
   Store({Key key, this.userAccoutModel}) : super(key: key);
 
+
   @override
   _StoreState createState() => _StoreState();
 }
@@ -26,7 +27,7 @@ class _StoreState extends State<Store> {
   String loginString = '';
   UserModel userModel;
   List<String> titleAppBars = ['คลังเครื่องกล', 'คลังไฟฟ้า', 'คลังกลาง'];
-  int indexTitleAppBars = 0;
+  int indexTitleAppBars =0;
   Widget currentWiget = MyCenter();
   List<Color> colorAppBars = [
     MyStyle().appBarCenter,

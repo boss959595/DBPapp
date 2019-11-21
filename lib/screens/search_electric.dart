@@ -45,6 +45,7 @@ class _SearchElectricState extends State<SearchElectric> {
 
   String userString,
       levelString = '',
+      keyString,
       sizeString,
       setupString,
       placeString,
@@ -86,7 +87,8 @@ class _SearchElectricState extends State<SearchElectric> {
   }
 
   Future<void> readAllData() async {
-    String url = 'https://www.androidthai.in.th/boss/getAllEquipmentElectric.php';
+    String url =
+        'https://www.androidthai.in.th/boss/getAllEquipmentElectric.php';
     Response response = await get(url);
     var result = json.decode(response.body);
     print('result = $result');
@@ -169,7 +171,8 @@ class _SearchElectricState extends State<SearchElectric> {
               //print('You click ${filterEquipmentModels[index].name}');
               MaterialPageRoute materialPageRoute = MaterialPageRoute(
                   builder: (BuildContext context) => ShowDetailElectric(
-                       equipmentElectricModel:filterEquipmentElectricModels[index],
+                        equipmentElectricModel:
+                            filterEquipmentElectricModels[index],
                       ));
               Navigator.of(context).push(materialPageRoute);
             },
@@ -238,6 +241,28 @@ class _SearchElectricState extends State<SearchElectric> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: 'รหัส Motor',
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.yellow.shade600),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'กรุณาใส่รหัส Motor';
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) {
+              keyString = value.trim();
+            },
+          ),
+          SizedBox(
+            height: 3.0,
+          ),
           TextFormField(
             decoration: InputDecoration(
               labelText: 'ขนาด Motor',
@@ -359,7 +384,7 @@ class _SearchElectricState extends State<SearchElectric> {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
           print(
-              'boss = $sizeString, $setupString, $placeString, $totalString, $limitString');
+              'boss = $keyString, $sizeString, $setupString, $placeString, $totalString, $limitString');
           insertEquipment();
           Navigator.of(context).pop();
         }
@@ -381,14 +406,14 @@ class _SearchElectricState extends State<SearchElectric> {
   }
 
   Future<void> insertEquipment() async {
-
     int xlimitString = int.parse(limitString);
     int xtotalString = int.parse(totalString);
 
-    print('object=$sizeString, $setupString, $placeString, $totalString, $limitString');
+    print(
+        'object=$keyString ,$sizeString, $setupString, $placeString, $totalString, $limitString');
 
     String url =
-        'https://www.androidthai.in.th/boss/addEquipmentElectric.php?isAdd=true&size_eq_ee=$sizeString&setup_eq_ee=$setupString&place_eq_ee=$placeString&total_eq_ee=$xtotalString&limit_eq_ee=$xlimitString';
+        'https://www.androidthai.in.th/boss/addEquipmentElectric.php?isAdd=true&key_eq_ee=$keyString&size_eq_ee=$sizeString&setup_eq_ee=$setupString&place_eq_ee=$placeString&total_eq_ee=$xtotalString&limit_eq_ee=$xlimitString';
 
     Response response = await get(url);
     var result = json.decode(response.body);

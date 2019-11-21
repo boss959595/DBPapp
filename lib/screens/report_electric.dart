@@ -1,17 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:dbpapp/models/report_model.dart';
-import 'package:dbpapp/screens/report_detail_center.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'report_detail_electric.dart';
 
-class ReportCenter extends StatefulWidget {
-  final ReportModel reportModel;
-  ReportCenter({Key key, this.reportModel}) : super(key: key);
-
+class ReportElectric extends StatefulWidget {
+  final ReportElectricModel reportElectricModel;
+  ReportElectric({Key key,this.reportElectricModel}):super(key:key);
   @override
-  _ReportCenterState createState() => _ReportCenterState();
+  _ReportElectricState createState() => _ReportElectricState();
 }
 
 class Debouncer {
@@ -29,32 +28,47 @@ class Debouncer {
   }
 }
 
-class _ReportCenterState extends State<ReportCenter> {
-  // Explicit
-  ReportModel myReportModel;
-  List<ReportModel> reportModels = [];
-  List<ReportModel> filterReportModels = List();
-  final debouncer = Debouncer(milliseconds: 500);
-  final formKey = GlobalKey<FormState>();
-  String userString;
-  String processIcon;
+class _ReportElectricState extends State<ReportElectric> {
+ 
+// Explicit
+ReportElectricModel myReportElectric;
+List<ReportElectricModel> reportElectricModels=[];
+List<ReportElectricModel> filterReportElectricModels=[];
+final debouncer = Debouncer(milliseconds: 500);
+final formKey = GlobalKey<FormState>();
+String userString;
 
-  // Medthod
-  @override
+
+// Medthod
+@override
   void initState() {
     super.initState();
     setState(() {
       readAllDataReport();
-      myReportModel = widget.reportModel;
+      myReportElectric=widget.reportElectricModel;
       findUser();
     });
   }
-
+ 
   Future findUser() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     userString = sharedPreferences.getString('User');
     print(userString);
     //findLevel();
+  }
+
+  Future readAllDataReport() async {
+    String url = 'http://androidthai.in.th/boss/getAllReportElectric.php';
+    Response response = await get(url);
+    var result = json.decode(response.body);
+    print('All Report = $result');
+    for (var map in result) {
+      ReportElectricModel reportElectricModel = ReportElectricModel.formJSON(map);
+      setState(() {
+        reportElectricModels.add(reportElectricModel);
+        filterReportElectricModels = reportElectricModels;
+      });
+    }
   }
 
   Widget searchTextReportDate() {
@@ -72,10 +86,10 @@ class _ReportCenterState extends State<ReportCenter> {
         onChanged: (value) {
           debouncer.run(() {
             setState(() {
-              filterReportModels = reportModels
+              filterReportElectricModels = reportElectricModels
                   .where(
                     (u) =>
-                        (u.dateEe.toLowerCase().contains(value.toLowerCase())),
+                        (u.dateRpEe.toLowerCase().contains(value.toLowerCase())),
                   )
                   .toList();
             });
@@ -102,7 +116,7 @@ class _ReportCenterState extends State<ReportCenter> {
             borderRadius: BorderRadius.circular(10.0),
           ),
           prefixIcon: Icon(Icons.search),
-          hintText: 'ค้นหาตามชื่อ',
+          hintText: 'ค้นหาตามขนาด Motor',
         ),
         onChanged: (value) {
           debouncer.run(() {
@@ -114,10 +128,10 @@ class _ReportCenterState extends State<ReportCenter> {
             //       .toList();
             // });
             setState(() {
-              filterReportModels = reportModels
+              filterReportElectricModels = reportElectricModels
                   .where(
                     (u) =>
-                        (u.nameRe.toLowerCase().contains(value.toLowerCase())),
+                        (u.sizeRpEe.toLowerCase().contains(value.toLowerCase())),
                   )
                   .toList();
             });
@@ -126,25 +140,11 @@ class _ReportCenterState extends State<ReportCenter> {
       ),
     );
   }
-
-  Future readAllDataReport() async {
-    String url = 'http://androidthai.in.th/boss/getAllReportBoss.php';
-    Response response = await get(url);
-    var result = json.decode(response.body);
-    print('All Report = $result');
-    for (var map in result) {
-      ReportModel reportModel = ReportModel.formJSON(map);
-     //print('Date = ${reportModel.dateEe}, Name = ${reportModel.nameRe}');
-      setState(() {
-        reportModels.add(reportModel);
-        filterReportModels = reportModels;
-      });
-    }
-  }
-
+ 
+ 
   Widget showDateReport(int index) {
     return Text(
-      filterReportModels[index].dateEe,
+      filterReportElectricModels[index].dateRpEe,
       style: TextStyle(
         fontSize: 15.0,
         color: Colors.black,
@@ -154,7 +154,7 @@ class _ReportCenterState extends State<ReportCenter> {
 
   Widget showNameReport(int index) {
     return Text(
-      filterReportModels[index].nameRe,
+      filterReportElectricModels[index].sizeRpEe,
       style: TextStyle(
         fontSize: 15.0,
         color: Colors.orange,
@@ -165,7 +165,7 @@ class _ReportCenterState extends State<ReportCenter> {
   Widget showReportListView() {
     return Expanded(
       child: ListView.builder(
-        itemCount: filterReportModels.length,
+        itemCount: filterReportElectricModels.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             child: Card(
@@ -201,10 +201,10 @@ class _ReportCenterState extends State<ReportCenter> {
               ),
             ),
             onTap: () {
-              print('You click ${filterReportModels[index].dateEe}');
+              print('You click ${filterReportElectricModels[index].dateRpEe}');
               MaterialPageRoute materialPageRoute = MaterialPageRoute(
-                  builder: (BuildContext context) => ShowReportDetailCenter(
-                        reportModel: filterReportModels[index],
+                  builder: (BuildContext context) => ReportDetailElectric(
+                        reportElectricModel: filterReportElectricModels[index],
                       ));
               Navigator.of(context).push(materialPageRoute);
             },
@@ -219,7 +219,7 @@ class _ReportCenterState extends State<ReportCenter> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconTheme.of(context),
-        backgroundColor: Colors.orange,
+        backgroundColor: Colors.yellowAccent,
         title: Text(
           'ประวัติการทำรายการ',
           style: TextStyle(color: Colors.black),

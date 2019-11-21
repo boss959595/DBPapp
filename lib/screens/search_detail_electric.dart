@@ -10,7 +10,6 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:date_format/date_format.dart';
 import 'my_dialog.dart';
-import 'my_electric.dart';
 import 'my_style.dart';
 import 'package:http/http.dart' as http;
 
@@ -30,7 +29,10 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
       sizeString,
       setupString,
       placeString,
-      limitString,numberString,nameString,placeStatusString='นำเข้า';
+      limitString,
+      numberString,
+      nameString,
+      placeStatusString = 'นำเข้า';
 
   final formKey = GlobalKey<FormState>();
   UserAccoutModel userAccoutModel;
@@ -104,6 +106,29 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
+          TextFormField(
+            initialValue: "${myEquipmentElectricModel.keyEqEe}",
+            decoration: InputDecoration(
+              labelText: 'รหัส Motor',
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.yellow.shade600),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'กรุณาใส่ รหัส Motor';
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) {
+              sizeString = value.trim();
+            },
+          ),
+          SizedBox(
+            height: 3.0,
+          ),
           TextFormField(
             initialValue: "${myEquipmentElectricModel.sizeEqEe}",
             decoration: InputDecoration(
@@ -291,16 +316,37 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
   }
 
   Future<void> processOkDelete() async {
-
     String url =
-        'https://www.androidthai.in.th/boss/deleteEquipmentWhereIdBoss.php?isAdd=true&id=${myEquipmentElectricModel.idEqEe}}';
+        'https://www.androidthai.in.th/boss/deleteEquipmentWhereIdElectric.php?isAdd=true&id=${myEquipmentElectricModel.idEqEe}';
     await get(url);
     MaterialPageRoute materialPageRoute =
         MaterialPageRoute(builder: (BuildContext context) => SearchElectric());
     Navigator.of(context).push(materialPageRoute);
   }
 
-  Widget myGroup() {
+  Widget myKey() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'รหัส Motor : ',
+          style: TextStyle(
+              fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
+        ),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Text(
+            '${myEquipmentElectricModel.keyEqEe}',
+            softWrap: false,
+            overflow: TextOverflow.fade,
+            style: TextStyle(fontSize: MyStyle().h2),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget mySize() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
@@ -322,7 +368,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
     );
   }
 
-  Widget myType() {
+  Widget mySetup() {
     return Row(
       children: <Widget>[
         Text(
@@ -343,7 +389,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
     );
   }
 
-  Widget showName() {
+  Widget myPlace() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
@@ -355,7 +401,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
         Flexible(
           fit: FlexFit.loose,
           child: Text(
-            '${myEquipmentElectricModel.placeEqEe},',
+            '${myEquipmentElectricModel.placeEqEe}',
             softWrap: false,
             overflow: TextOverflow.fade,
             style: TextStyle(fontSize: MyStyle().h2),
@@ -523,7 +569,8 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
   }
 
   Widget placeUse() {
-    return TextFormField(initialValue: 'นำออก ',
+    return TextFormField(
+      initialValue: 'นำออก ',
       decoration: InputDecoration(
         labelText: 'สถานที่นำไปใช้งาน',
         enabledBorder: OutlineInputBorder(
@@ -575,11 +622,11 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
     if (process == '0') {
       totalAInt = totalAInt + numberAInt;
       String url =
-          'https://www.androidthai.in.th/boss/updateEquipmentWhereIdboss.php?isAdd=true&id_eq=$idEqEe&total=$totalAInt';
+          'https://www.androidthai.in.th/boss/updateEquipmentWhereIdElectric.php?isAdd=true&id_eq_ee=$idEqEe&total_eq_ee=$totalAInt';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
-        print('EQM success');
+        print('EQM + success');
         insertReport('0', totalAInt);
       } else {
         normalAlert(context, 'ข้อมูลผิดพลาด', 'กรุณาลองใหม่');
@@ -587,11 +634,11 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
     } else {
       totalAInt = totalAInt - numberAInt;
       String url =
-          'https://www.androidthai.in.th/boss/updateEquipmentWhereIdboss.php?isAdd=true&id_eq=$idEqEe&total=$totalAInt';
+          'https://www.androidthai.in.th/boss/updateEquipmentWhereIdElectric.php?isAdd=true&id_eq_ee=$idEqEe&total_eq_ee=$totalAInt';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
-        print('EQM success');
+        print('EQM - success');
         insertReport('1', totalAInt);
       } else {
         normalAlert(context, 'ข้อมูลผิดพลาด', 'กรุณาลองใหม่');
@@ -615,19 +662,14 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
     String myProcess = process;
 
     if (myProcess == 1) {
-      
       String url =
           'https://www.androidthai.in.th/boss/addReportElectric.php?isAdd=true&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$myProcess&status_rp_ee=$placeStatusString';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
         MaterialPageRoute materialPageRoute = MaterialPageRoute(
-          builder: (BuildContext context) => Store(
-            userAccoutModel: userAccoutModel,
-          ),
-        );
-        Navigator.of(context).pushAndRemoveUntil(
-            materialPageRoute, (Route<dynamic> route) => false);
+            builder: (BuildContext context) => SearchElectric());
+        Navigator.of(context).push(materialPageRoute);
       } else {
         normalAlert(context, 'ผิดพลาด', 'กรุณาลองใหม่');
       }
@@ -638,12 +680,8 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
         MaterialPageRoute materialPageRoute = MaterialPageRoute(
-          builder: (BuildContext context) => Store(
-            userAccoutModel: userAccoutModel,
-          ),
-        );
-        Navigator.of(context).pushAndRemoveUntil(
-            materialPageRoute, (Route<dynamic> route) => false);
+            builder: (BuildContext context) => SearchElectric());
+        Navigator.of(context).push(materialPageRoute);
       } else {
         normalAlert(context, 'ผิดพลาด', 'กรุณาลองใหม่');
       }
@@ -696,8 +734,6 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
     return response;
   }
 
-  
-
   void showAlert(int index) {
     showDialog(
         context: context,
@@ -724,7 +760,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         actions: <Widget>[
-             levelString == '2' ? barDeleteEquipment() : SizedBox(),
+          levelString == '2' ? barDeleteEquipment() : SizedBox(),
           levelString == '2' ? barEditEquipment() : SizedBox(),
         ],
         // actions: <Widget>[testLine()],
@@ -741,17 +777,19 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
             padding: EdgeInsets.all(30.0),
             child: Column(
               children: <Widget>[
-                  myGroup(),
+                myKey(),
                 Divider(),
-                   myType(),
+                mySize(),
                 Divider(),
-                   showName(),
+                mySetup(),
                 Divider(),
-                    myTotal(),
+                myPlace(),
+                Divider(),
+                myTotal(),
               ],
             ),
           ),
-             levelString == '2' ? myButton() : SizedBox(),
+          levelString == '2' ? myButton() : SizedBox(),
         ],
       ),
     );

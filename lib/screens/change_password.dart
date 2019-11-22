@@ -125,7 +125,7 @@ class _ChangePasswordState extends State<ChangePassword> {
     // print('PPP O = $idAccout $passwordString $passwordString2');
     if (passwordString == passwordString2) {
       String url =
-          'https://www.androidthai.in.th/boss/updatePasswordWhereIdboss.php?isAdd=true&id_acc=$idAccout&pass=$passwordString';
+          'https://iot-en.me/api/updatePasswordWhereIdboss.php?isAdd=true&id_acc=$idAccout&pass=$passwordString';
 
       Response response = await get(url);
       var result = jsonDecode(response.body);

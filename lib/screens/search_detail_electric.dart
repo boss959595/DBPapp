@@ -243,7 +243,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
         'bossx = ${myEquipmentElectricModel.idEqEe},$sizeString, $setupString, $placeString, $limitString , $keyString');
 
     String url =
-        'https://www.androidthai.in.th/boss/editEquipmentWhereIdElectric.php/?isAdd=true&id_eq_ee=${myEquipmentElectricModel.idEqEe}&key_eq_ee=$keyString&size_eq_ee=$sizeString&setup_eq_ee=$setupString&place_eq_ee=$placeString&total_eq_ee=${myEquipmentElectricModel.totalEqEe}&limit_eq_ee=$limitString';
+        'https://iot-en.me/api/editEquipmentWhereIdElectric.php/?isAdd=true&id_eq_ee=${myEquipmentElectricModel.idEqEe}&key_eq_ee=$keyString&size_eq_ee=$sizeString&setup_eq_ee=$setupString&place_eq_ee=$placeString&total_eq_ee=${myEquipmentElectricModel.totalEqEe}&limit_eq_ee=$limitString';
 
     Response response = await get(url);
     var result = json.decode(response.body);
@@ -318,7 +318,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
 
   Future<void> processOkDelete() async {
     String url =
-        'https://www.androidthai.in.th/boss/deleteEquipmentWhereIdElectric.php?isAdd=true&id=${myEquipmentElectricModel.idEqEe}';
+        'https://iot-en.me/api/deleteEquipmentWhereIdElectric.php?isAdd=true&id=${myEquipmentElectricModel.idEqEe}';
     await get(url);
     MaterialPageRoute materialPageRoute =
         MaterialPageRoute(builder: (BuildContext context) => SearchElectric());
@@ -623,7 +623,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
     if (process == '0') {
       totalAInt = totalAInt + numberAInt;
       String url =
-          'https://www.androidthai.in.th/boss/updateEquipmentWhereIdElectric.php?isAdd=true&id_eq_ee=$idEqEe&total_eq_ee=$totalAInt';
+          'https://iot-en.me/api/updateEquipmentWhereIdElectric.php?isAdd=true&id_eq_ee=$idEqEe&total_eq_ee=$totalAInt';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
@@ -635,7 +635,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
     } else {
       totalAInt = totalAInt - numberAInt;
       String url =
-          'https://www.androidthai.in.th/boss/updateEquipmentWhereIdElectric.php?isAdd=true&id_eq_ee=$idEqEe&total_eq_ee=$totalAInt';
+          'https://iot-en.me/api/updateEquipmentWhereIdElectric.php?isAdd=true&id_eq_ee=$idEqEe&total_eq_ee=$totalAInt';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
@@ -665,7 +665,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
 
     if (myProcess == 1) {
       String url =
-          'https://www.androidthai.in.th/boss/addReportElectric.php?isAdd=true&key_rp_ee=$key&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$myProcess&status_rp_ee=$placeStatusString';
+          'https://iot-en.me/api/addReportElectric.php?isAdd=true&key_rp_ee=$key&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$myProcess&status_rp_ee=$placeStatusString';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
@@ -677,7 +677,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
       }
     } else {
       String url =
-          'https://www.androidthai.in.th/boss/addReportElectric.php?isAdd=true&key_rp_ee=$key&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$myProcess&status_rp_ee=$placeStatusString';
+          'https://iot-en.me/api/addReportElectric.php?isAdd=true&key_rp_ee=$key&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$myProcess&status_rp_ee=$placeStatusString';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {

@@ -29,7 +29,7 @@ class _AlertLimitCenterState extends State<AlertLimitCenter> {
   }
 
   Future<void> readAllAlertLimit()async{
-    String url = 'http://androidthai.in.th/boss/getAlertLimitBoss.php';
+    String url = 'https://iot-en.me/api/getAlertLimitBoss.php';
     Response response = await get(url);
     var result = json.decode(response.body);
     print('Alert = $result');

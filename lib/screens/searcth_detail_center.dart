@@ -283,7 +283,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     //print(idDeleteEquipment);
 
     String url =
-        'https://www.androidthai.in.th/boss/deleteEquipmentWhereIdBoss.php?isAdd=true&id_eq=$xidDeleteEquipment';
+        'https://iot-en.me/api/deleteEquipmentWhereIdBoss.php?isAdd=true&id_eq=$xidDeleteEquipment';
     await get(url);
     MaterialPageRoute materialPageRoute =
         MaterialPageRoute(builder: (BuildContext context) => SearchCenter());
@@ -585,7 +585,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
         'tiwz = $xidDeleteEquipment,$xkeyString, $xnameString, $xtypeString, $xgroupString, $xunitString, $xxlimitString');
 
     String url =
-        'https://www.androidthai.in.th/boss/editEquipmentWhereIdboss.php/?isAdd=true&id_eq=$xidDeleteEquipment&key=$xkeyString&name=$xnameString&type=$xtypeString&group=$xgroupString&unit=$xunitString&limit=$xxlimitString';
+        'https://iot-en.me/api/editEquipmentWhereIdboss.php/?isAdd=true&id_eq=$xidDeleteEquipment&key=$xkeyString&name=$xnameString&type=$xtypeString&group=$xgroupString&unit=$xunitString&limit=$xxlimitString';
 
     Response response = await get(url);
     var result = json.decode(response.body);
@@ -647,7 +647,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     if (process == '0') {
       totalAInt = totalAInt + numberAInt;
       String url =
-          'https://www.androidthai.in.th/boss/updateEquipmentWhereIdboss.php?isAdd=true&id_eq=$ideq&total=$totalAInt';
+          'https://iot-en.me/api/updateEquipmentWhereIdboss.php?isAdd=true&id_eq=$ideq&total=$totalAInt';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
@@ -659,7 +659,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     } else {
       totalAInt = totalAInt - numberAInt;
       String url =
-          'https://www.androidthai.in.th/boss/updateEquipmentWhereIdboss.php?isAdd=true&id_eq=$ideq&total=$totalAInt';
+          'https://iot-en.me/api/updateEquipmentWhereIdboss.php?isAdd=true&id_eq=$ideq&total=$totalAInt';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
@@ -690,7 +690,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     if (process == 1) {
       
       String url =
-          'https://www.androidthai.in.th/boss/addReportBoss.php?isAdd=true&key_re=$key&user_re=$nameString&name_re=$nameEqString&group_re=$group&type_re=$type&unit_re=$unit&total_re=$total&process_re=$myProcess&status_re=$placeString';
+          'https://iot-en.me/api/addReportBoss.php?isAdd=true&key_re=$key&user_re=$nameString&name_re=$nameEqString&group_re=$group&type_re=$type&unit_re=$unit&total_re=$total&process_re=$myProcess&status_re=$placeString';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
@@ -706,7 +706,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
       }
     } else {
       String url =
-          'https://www.androidthai.in.th/boss/addReportBoss.php?isAdd=true&key_re=$key&user_re=$nameString&name_re=$nameEqString&group_re=$group&type_re=$type&unit_re=$unit&total_re=$total&process_re=$myProcess&status_re=$placeString';
+          'https://iot-en.me/api/addReportBoss.php?isAdd=true&key_re=$key&user_re=$nameString&name_re=$nameEqString&group_re=$group&type_re=$type&unit_re=$unit&total_re=$total&process_re=$myProcess&status_re=$placeString';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {

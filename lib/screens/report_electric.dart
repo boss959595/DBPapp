@@ -58,7 +58,7 @@ String userString;
   }
 
   Future readAllDataReport() async {
-    String url = 'http://androidthai.in.th/boss/getAllReportElectric.php';
+    String url = 'https://iot-en.me/api/getAllReportElectric.php';
     Response response = await get(url);
     var result = json.decode(response.body);
     print('All Report = $result');

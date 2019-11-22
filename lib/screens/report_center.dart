@@ -128,7 +128,7 @@ class _ReportCenterState extends State<ReportCenter> {
   }
 
   Future readAllDataReport() async {
-    String url = 'http://androidthai.in.th/boss/getAllReportBoss.php';
+    String url = 'https://iot-en.me/api/getAllReportBoss.php';
     Response response = await get(url);
     var result = json.decode(response.body);
     print('All Report = $result');

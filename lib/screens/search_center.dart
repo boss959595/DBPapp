@@ -87,7 +87,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
   }
 
   Future<void> readAllData() async {
-    String url = 'https://www.androidthai.in.th/boss/getAllEquipmentBoss.php';
+    String url = 'https://iot-en.me/api/getAllEquipmentBoss.php';
     Response response = await get(url);
     var result = json.decode(response.body);
     print('result = $result');
@@ -440,7 +440,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
         'object=$keyString,$nameString,$typeString,$groupString,$unitString,$xlimitString,$xtotalString');
 
     String url =
-        'https://www.androidthai.in.th/boss/addEquipmentBoss.php?isAdd=true&key=$keyString&name=$nameString&type=$typeString&group=$groupString&unit=$unitString&limit=$xlimitString&total=$xtotalString';
+        'https://iot-en.me/api/addEquipmentBoss.php?isAdd=true&key=$keyString&name=$nameString&type=$typeString&group=$groupString&unit=$unitString&limit=$xlimitString&total=$xtotalString';
 
     Response response = await get(url);
     var result = json.decode(response.body);

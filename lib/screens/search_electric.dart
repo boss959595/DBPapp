@@ -87,7 +87,7 @@ class _SearchElectricState extends State<SearchElectric> {
 
   Future<void> readAllData() async {
     String url =
-        'https://www.androidthai.in.th/boss/getAllEquipmentElectric.php';
+        'https://iot-en.me/api/getAllEquipmentElectric.php';
     Response response = await get(url);
     var result = json.decode(response.body);
     print('result = $result');
@@ -412,7 +412,7 @@ class _SearchElectricState extends State<SearchElectric> {
         'object=$keyString ,$sizeString, $setupString, $placeString, $totalString, $limitString');
 
     String url =
-        'https://www.androidthai.in.th/boss/addEquipmentElectric.php?isAdd=true&key_eq_ee=$keyString&size_eq_ee=$sizeString&setup_eq_ee=$setupString&place_eq_ee=$placeString&total_eq_ee=$xtotalString&limit_eq_ee=$xlimitString';
+        'https://iot-en.me/api/addEquipmentElectric.php?isAdd=true&key_eq_ee=$keyString&size_eq_ee=$sizeString&setup_eq_ee=$setupString&place_eq_ee=$placeString&total_eq_ee=$xtotalString&limit_eq_ee=$xlimitString';
 
     Response response = await get(url);
     var result = json.decode(response.body);

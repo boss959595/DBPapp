@@ -212,13 +212,13 @@ class _RegisterState extends State<Register> {
     //     'object VVV=$keyUserString, $nameString, $departmentString, $sectionString, $devisionString, $emailString, $phoneString');
 
     String url =
-        'https://www.androidthai.in.th/boss/addUserBoss.php?isAdd=true&employee_id=$keyUserString&name=$nameString&department=$departmentString&section=$sectionString&division=$devisionString&email=$emailString&phone=$phoneString';
+        'https://iot-en.me/api/addUserBoss.php?isAdd=true&employee_id=$keyUserString&name=$nameString&department=$departmentString&section=$sectionString&division=$devisionString&email=$emailString&phone=$phoneString';
 
     Response response = await get(url);
     var result = json.decode(response.body);
 
     String url2 =
-        'https://www.androidthai.in.th/boss/addAccoutBoss.php?isAdd=true&user=$keyUserString&pass=1234';
+        'https://iot-en.me/api/addAccoutBoss.php?isAdd=true&user=$keyUserString&pass=1234';
 
     Response response2 = await get(url2);
     var result2 = json.decode(response2.body);

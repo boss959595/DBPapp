@@ -6,11 +6,11 @@ class MyStyle {
   String myFont = 'Charm';
 
   String urlGetUser =
-      'https://www.androidthai.in.th/boss/getUserWhereUserBoss.php?isAdd=true&User=';
+      'https://iot-en.me/api/getUserWhereUserBoss.php?isAdd=true&User=';
       
 
   String urlGetName =
-      'https://www.androidthai.in.th/boss/getNameWhereUserBoss.php?isAdd=true&User=';
+      'https://iot-en.me/api/getNameWhereUserBoss.php?isAdd=true&User=';
       
 
   // Color textColor = Color.fromARGB(255, 206, 23, 30);

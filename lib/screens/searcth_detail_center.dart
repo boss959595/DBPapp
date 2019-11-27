@@ -37,7 +37,9 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
       xgroupString,
       xunitString,
       xlimitString,
-      placeString='นำเข้า';
+      placeString = 'นำเข้า',
+      noString,
+      becauseString;
 
   final formKey = GlobalKey<FormState>();
   UserAccoutModel userAccoutModel;
@@ -534,13 +536,55 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
             height: 5.0,
           ),
           index == 1 ? placeUse() : SizedBox(),
+          SizedBox(
+            height: 5.0,
+          ),
+           index == 1 ? noUse() : SizedBox(),
+          SizedBox(
+            height: 5.0,
+          ),
+           index == 1 ? becauseUse() : SizedBox(),
+          SizedBox(
+            height: 5.0,
+          ),
         ],
       ),
     );
   }
 
+  Widget noUse() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: 'No.',
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.yellow.shade600),
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+      ),
+      onSaved: (value) {
+        noString = value.trim();
+      },
+    );
+  }
+
+  Widget becauseUse() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: 'สาเหตุ/การชำรุด',
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(color: Colors.yellow.shade600),
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+      ),
+      onSaved: (value) {
+        becauseString = value.trim();
+      },
+    );
+  }
+
   Widget placeUse() {
-    return TextFormField(initialValue: 'นำออก ',
+    return TextFormField(
+      initialValue: 'นำไปใช้งาน ',
       decoration: InputDecoration(
         labelText: 'สถานที่นำไปใช้งาน',
         enabledBorder: OutlineInputBorder(
@@ -652,7 +696,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
         print('EQM success');
-        insertReport('0', totalAInt);
+        insertReport(process, totalAInt);
       } else {
         normalAlert(context, 'ข้อมูลผิดพลาด', 'กรุณาลองใหม่');
       }
@@ -664,7 +708,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
         print('EQM success');
-        insertReport('1', totalAInt);
+        insertReport(process, totalAInt);
       } else {
         normalAlert(context, 'ข้อมูลผิดพลาด', 'กรุณาลองใหม่');
       }
@@ -685,12 +729,13 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     String nameEqString = myEquipmentModel.name;
     String unit = myEquipmentModel.unit;
     String total = '${myEquipmentModel.total} -> $totalAInt';
-    String myProcess = process;
 
-    if (process == 1) {
-      
+
+
+
+    if (process == '1') {
       String url =
-          'https://iot-en.me/api/addReportBoss.php?isAdd=true&key_re=$key&user_re=$nameString&name_re=$nameEqString&group_re=$group&type_re=$type&unit_re=$unit&total_re=$total&process_re=$myProcess&status_re=$placeString';
+          'https://iot-en.me/api/addReportBoss.php?isAdd=true&key_re=$key&user_re=$nameString&name_re=$nameEqString&group_re=$group&type_re=$type&unit_re=$unit&total_re=$total&process_re=$process&status_re=$placeString&no_re=$noString&because_re=$becauseString';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
@@ -706,7 +751,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
       }
     } else {
       String url =
-          'https://iot-en.me/api/addReportBoss.php?isAdd=true&key_re=$key&user_re=$nameString&name_re=$nameEqString&group_re=$group&type_re=$type&unit_re=$unit&total_re=$total&process_re=$myProcess&status_re=$placeString';
+          'https://iot-en.me/api/addReportBoss.php?isAdd=true&key_re=$key&user_re=$nameString&name_re=$nameEqString&group_re=$group&type_re=$type&unit_re=$unit&total_re=$total&process_re=$process&status_re=$placeString';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {

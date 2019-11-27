@@ -9,7 +9,7 @@ class ReportModel {
       unitRe,
       totalRe,
       processRe,
-      statusRe;
+      statusRe,noRe,becauseRe;
 
   ReportModel(
       this.idEe,
@@ -22,7 +22,7 @@ class ReportModel {
       this.unitRe,
       this.totalRe,
       this.processRe,
-      this.statusRe);
+      this.statusRe,this.noRe,this.becauseRe);
 
   ReportModel.formJSON(Map<String, dynamic> map) {
     idEe = map['id_re'];
@@ -36,6 +36,8 @@ class ReportModel {
     totalRe = map['total_re'];
     processRe = map['process_re'];
     statusRe = map['status_re'];
+    noRe = map['no_re'];
+    becauseRe = map['because_re'];
   }
 }
 

@@ -114,9 +114,8 @@ class _ShowReportDetailCenterState extends State<ShowReportDetailCenter> {
     );
   }
 
-  Widget placeName() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+  Widget myStatus() {
+    return Row(mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Text(
           'สถานะ : ',
@@ -154,6 +153,58 @@ class _ShowReportDetailCenterState extends State<ShowReportDetailCenter> {
             style: TextStyle(fontSize: MyStyle().h2),
           ),
         ),
+      ],
+    );
+  }
+
+  Widget myNo() {
+    return Row(
+      children: <Widget>[
+        Text(
+          'No. ',
+          style: TextStyle(
+              fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
+        ),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Text(
+            '${myReportModel.noRe}',
+            softWrap: false,
+            overflow: TextOverflow.fade,
+            style: TextStyle(fontSize: MyStyle().h2),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget myBecause() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'สาเหตุ/การชำรุด : ',
+          style: TextStyle(
+              fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
+        ),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Text(
+            '${myReportModel.becauseRe}',
+            softWrap: false,
+            overflow: TextOverflow.fade,
+            style: TextStyle(fontSize: MyStyle().h2),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget myStatusAndMyNo() {
+    return new Column(mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        myStatus(),
+        myNo(),
       ],
     );
   }
@@ -230,7 +281,12 @@ class _ShowReportDetailCenterState extends State<ShowReportDetailCenter> {
                 Divider(),
                 myName(),
                 Divider(),
-                placeName(),
+                myStatusAndMyNo(),
+                // myStatus(),
+                // Divider(),
+                // myNo(),
+                Divider(),
+                myBecause(),
                 Divider(),
                 myTotal(),
               ],

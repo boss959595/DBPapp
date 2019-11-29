@@ -67,7 +67,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
   Future findUser() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     userString = sharedPreferences.getString('User');
-    print(userString);
+    print('UserString = $userString');
     findLevel();
   }
 
@@ -75,12 +75,13 @@ class _SearchViewMaterialState extends State<SearchCenter> {
     String url = '${MyStyle().urlGetUser}$userString';
     Response response = await get(url);
     var result = json.decode(response.body);
-    print(result);
+    print('User detail = $result');
     for (var map in result) {
       userAccoutModel = UserAccoutModel.fromJSON(map);
       setState(
         () {
           levelString = userAccoutModel.level;
+          print('LV = $levelString');
         },
       );
     }
@@ -90,10 +91,10 @@ class _SearchViewMaterialState extends State<SearchCenter> {
     String url = 'https://iot-en.me/api/getAllEquipmentBoss.php';
     Response response = await get(url);
     var result = json.decode(response.body);
-    print('result = $result');
+    //print('result = $result');
     for (var map in result) {
       EquipmentModel equipmentModel = EquipmentModel.formJSON(map);
-      print('name = ${equipmentModel.name}');
+     // print('name = ${equipmentModel.name}');
       setState(() {
         equipmentModels.add(equipmentModel);
         filterEquipmentModels = equipmentModels;
@@ -408,8 +409,8 @@ class _SearchViewMaterialState extends State<SearchCenter> {
       onPressed: () {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
-          print(
-              'boss = $keyString, $nameString, $typeString, $groupString, $unitString, $limitString, $totalString');
+          // print(
+          //     'boss = $keyString, $nameString, $typeString, $groupString, $unitString, $limitString, $totalString');
           insertEquipment();
           Navigator.of(context).pop();
         }
@@ -436,8 +437,8 @@ class _SearchViewMaterialState extends State<SearchCenter> {
     int xlimitString = int.parse(limitString);
     int xtotalString = int.parse(totalString);
 
-    print(
-        'object=$keyString,$nameString,$typeString,$groupString,$unitString,$xlimitString,$xtotalString');
+    // print(
+    //     'object=$keyString,$nameString,$typeString,$groupString,$unitString,$xlimitString,$xtotalString');
 
     String url =
         'https://iot-en.me/api/addEquipmentBoss.php?isAdd=true&key=$keyString&name=$nameString&type=$typeString&group=$groupString&unit=$unitString&limit=$xlimitString&total=$xtotalString';

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dbpapp/models/equipment_model.dart';
 import 'package:dbpapp/models/report_model.dart';
 import 'package:dbpapp/models/user_accout.dart';
+import 'package:dbpapp/models/user_model.dart';
 import 'package:dbpapp/screens/my_dialog.dart';
 import 'package:dbpapp/screens/my_style.dart';
 import 'package:dbpapp/screens/search_center.dart';
@@ -26,7 +27,11 @@ class ShowDetailCenter extends StatefulWidget {
 class _ShowDetailCenterState extends State<ShowDetailCenter> {
   // Explicit
   ReportModel myReportModel;
+  String loginString = '';
+  UserModel userModel;
   EquipmentModel myEquipmentModel;
+  final formKey = GlobalKey<FormState>();
+  UserAccoutModel userAccoutModel;
   String userString,
       levelString = '',
       numberString,
@@ -41,8 +46,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
       noString,
       becauseString;
 
-  final formKey = GlobalKey<FormState>();
-  UserAccoutModel userAccoutModel;
+  
 
   // Method
   @override
@@ -52,6 +56,41 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
       myEquipmentModel = widget.equipmentModel;
       findUser();
     });
+  }
+
+  Future findUser() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    userString = sharedPreferences.getString('User');
+    print('UserString = $userString');
+    findLevel();
+    findNameLogin();
+  }
+
+Future findLevel() async {
+    String url = '${MyStyle().urlGetUser}$userString';
+    Response response = await get(url);
+    var result = json.decode(response.body);
+    print('find LV = $result');
+    for (var map in result) {
+      userAccoutModel = UserAccoutModel.fromJSON(map);
+      setState(() {
+        levelString = userAccoutModel.level;
+      });
+    }
+  }
+
+  Future<void> findNameLogin() async {
+    String url = '${MyStyle().urlGetName}$userString';
+    Response response = await get(url);
+    var result = jsonDecode(response.body);
+    print('result findNameLogin = $result');
+    for (var map in result) {
+      setState(() {
+        userModel = UserModel.fromJson(map);
+        loginString = userModel.name;
+        print('loginString = $loginString');
+      });
+    }
   }
 
   Widget barEditEquipment() {
@@ -292,25 +331,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     Navigator.of(context).push(materialPageRoute);
   }
 
-  Future findUser() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    userString = sharedPreferences.getString('User');
-    print(userString);
-    findLevel();
-  }
-
-  Future findLevel() async {
-    String url = '${MyStyle().urlGetUser}$userString';
-    Response response = await get(url);
-    var result = json.decode(response.body);
-    print(result);
-    for (var map in result) {
-      userAccoutModel = UserAccoutModel.fromJSON(map);
-      setState(() {
-        levelString = userAccoutModel.level;
-      });
-    }
-  }
+  
 
   // Widget contentRow1() {
   //   return Row(
@@ -374,7 +395,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
         Flexible(
           fit: FlexFit.loose,
           child: Text(
-            '${myEquipmentModel.name},',
+            '${myEquipmentModel.name}',
             softWrap: false,
             overflow: TextOverflow.fade,
             style: TextStyle(fontSize: MyStyle().h2),
@@ -735,7 +756,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
 
     if (process == '1') {
       String url =
-          'https://iot-en.me/api/addReportBoss.php?isAdd=true&key_re=$key&user_re=$nameString&name_re=$nameEqString&group_re=$group&type_re=$type&unit_re=$unit&total_re=$total&process_re=$process&status_re=$placeString&no_re=$noString&because_re=$becauseString';
+          'https://iot-en.me/api/addReportBoss.php?isAdd=true&key_re=$key&user_re=$nameString&name_re=$nameEqString&group_re=$group&type_re=$type&unit_re=$unit&total_re=$total&process_re=$process&status_re=$placeString&no_re=$noString&because_re=$becauseString&admin_re=$loginString';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
@@ -751,7 +772,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
       }
     } else {
       String url =
-          'https://iot-en.me/api/addReportBoss.php?isAdd=true&key_re=$key&user_re=$nameString&name_re=$nameEqString&group_re=$group&type_re=$type&unit_re=$unit&total_re=$total&process_re=$process&status_re=$placeString';
+          'https://iot-en.me/api/addReportBoss.php?isAdd=true&key_re=$key&user_re=$nameString&name_re=$nameEqString&group_re=$group&type_re=$type&unit_re=$unit&total_re=$total&process_re=$process&status_re=$placeString&admin_re=$loginString';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {

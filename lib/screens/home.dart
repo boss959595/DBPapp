@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dbpapp/models/user_accout.dart';
 import 'package:dbpapp/screens/my_dialog.dart';
@@ -17,64 +18,68 @@ class _HomeState extends State<Home> {
   // Explicit
   String user, password;
   final formKey = GlobalKey<FormState>();
-  bool statusRemember = false;
+  //bool statusRemember = false;
 
   // Method
 
-  @override
-  void initState() {
-    super.initState();
-    checkStatus();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   //checkStatus();
+  // }
 
-  Future<void> checkStatus() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String userLogin = sharedPreferences.getString('User');
-    if (userLogin != null && userLogin.isNotEmpty) {
-      loadDataLogin(userLogin);
-    }
-  }
+  // Future<void> checkStatus() async {
+  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //   String userLogin = sharedPreferences.getString('User');
+  //   if (userLogin != null && userLogin.isNotEmpty) {
+  //     loadDataLogin(user);
+  //   }
+  // }
 
-  Future<void> loadDataLogin(String user) async {
-    String url = '${MyStyle().urlGetUser}$user';
-    Response response = await get(url);
-    var result = json.decode(response.body);
-    for (var map in result) {
-      UserAccoutModel userAccoutModel = UserAccoutModel.fromJSON(map);
-      MaterialPageRoute materialPageRoute =
-          MaterialPageRoute(builder: (BuildContext context) {
-        return Store(
-          userAccoutModel: userAccoutModel,
-        );
-      });
-      Navigator.of(context).pushAndRemoveUntil(materialPageRoute,
-          (Route<dynamic> route) {
-        return false;
-      });
-    }
-  }
+  // Future<void> loadDataLogin(String user) async {
+  //   String url = '${MyStyle().urlGetUser}$user';
+  //   Response response = await get(url);
+  //   var result = json.decode(response.body);
 
-  Widget rememberCheckBox() {
-    return Container(
-      width: 250.0,
-      //color: Colors.grey,
-      child: CheckboxListTile(
-        activeColor: MyStyle().textColor,
-        controlAffinity: ListTileControlAffinity.leading,
-        title: Text(
-          'จำรหัสผ่าน',
-          style: TextStyle(color: MyStyle().textColor),
-        ),
-        value: statusRemember,
-        onChanged: (value) {
-          setState(() {
-            statusRemember = value;
-            print('statusRemember = $statusRemember');
-          });
-        },
-      ),
-    );
-  }
+  //   print('1st url = $url');
+  //   print('1st = $result');
+
+    // for (var map in result) {
+    //   UserAccoutModel userAccoutModel = UserAccoutModel.fromJSON(map);
+    //   MaterialPageRoute materialPageRoute =
+    //       MaterialPageRoute(builder: (BuildContext context) {
+    //     return Store(
+    //       userAccoutModel: userAccoutModel,
+    //     );
+    //   });
+    //   Navigator.of(context).pushAndRemoveUntil(materialPageRoute,
+    //       (Route<dynamic> route) {
+    //     return false;
+    //   });
+    // }
+  // }
+
+  // Widget rememberCheckBox() {
+  //   return Container(
+  //     width: 250.0,
+  //     //color: Colors.grey,
+  //     child: CheckboxListTile(
+  //       activeColor: MyStyle().textColor,
+  //       controlAffinity: ListTileControlAffinity.leading,
+  //       title: Text(
+  //         'จำรหัสผ่าน',
+  //         style: TextStyle(color: MyStyle().textColor),
+  //       ),
+  //       value: statusRemember,
+  //       onChanged: (value) {
+  //         setState(() {
+  //           statusRemember = value;
+  //           print('statusRemember = $statusRemember');
+  //         });
+  //       },
+  //     ),
+  //   );
+  // }
 
   Widget showLogo() {
     return Container(
@@ -167,6 +172,7 @@ class _HomeState extends State<Home> {
         onPressed: () {
           if (formKey.currentState.validate()) {
             formKey.currentState.save();
+            log('user = $user, password =$password');
             print('user = $user, password =$password');
             checkAuthen();
           }
@@ -180,7 +186,7 @@ class _HomeState extends State<Home> {
 
     Response response = await get(url);
     var result = json.decode(response.body);
-    print('result = $result');
+    print('result User = $result');
 
     if (result.toString() == 'null') {
       normalAlert(context, 'ไม่พบไอดี', 'ไอดี $user ยังไม่ได้ทำการลงทะเบียน ');
@@ -190,9 +196,10 @@ class _HomeState extends State<Home> {
         String truePass = userAccoutModel.pass;
         print('truePass = $truePass');
         if (password == truePass) {
-          if (statusRemember) {
+         // if (statusRemember) {
+            print('Login Success');
             saveRemember();
-          }
+         // }
 
           MaterialPageRoute materialPageRoute =
               MaterialPageRoute(builder: (BuildContext context) {
@@ -204,9 +211,10 @@ class _HomeState extends State<Home> {
               (Route<dynamic> route) {
             return false;
           });
-        } else {
+         } else {
           normalAlert(context, 'รหัสผิด', 'กรุณาลองใหม่อีกครั้ง');
-        }
+         }
+      
       }
     }
   }
@@ -248,7 +256,7 @@ class _HomeState extends State<Home> {
                   SizedBox(
                     height: 8.0,
                   ),
-                  rememberCheckBox(),
+                 // rememberCheckBox(),
                   loginButton(),
                 ],
               ),

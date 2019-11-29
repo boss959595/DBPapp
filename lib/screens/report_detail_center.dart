@@ -26,6 +26,12 @@ class _ShowReportDetailCenterState extends State<ShowReportDetailCenter> {
     });
   }
 
+   Future findUser() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    userString = sharedPreferences.getString('User');
+    print(userString);
+  }
+
   Widget myDate() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -97,7 +103,7 @@ class _ShowReportDetailCenterState extends State<ShowReportDetailCenter> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         Text(
-          'ชื่อวัสดุ/อุปกรณ์ : ',
+          'ชื่อ : ',
           style: TextStyle(
               fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
         ),
@@ -107,7 +113,7 @@ class _ShowReportDetailCenterState extends State<ShowReportDetailCenter> {
             '${myReportModel.nameRe}',
             softWrap: false,
             overflow: TextOverflow.fade,
-            style: TextStyle(fontSize: MyStyle().h2),
+            style: TextStyle(fontSize: MyStyle().h2),maxLines: 2,
           ),
         ),
       ],
@@ -246,11 +252,7 @@ class _ShowReportDetailCenterState extends State<ShowReportDetailCenter> {
     );
   }
 
-  Future findUser() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    userString = sharedPreferences.getString('User');
-    print(userString);
-  }
+ 
 
   @override
   Widget build(BuildContext context) {

@@ -142,7 +142,7 @@ class _StoreState extends State<Store> {
     String url = '${MyStyle().urlGetName}${_userAccoutModel.user}';
     Response response = await get(url);
     var result = jsonDecode(response.body);
-    print('result = $result');
+    print('result findNameLogin = $result');
     for (var map in result) {
       setState(() {
         userModel = UserModel.fromJson(map);

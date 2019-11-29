@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dbpapp/models/equipment_model.dart';
 import 'package:dbpapp/models/report_model.dart';
 import 'package:dbpapp/models/user_accout.dart';
+import 'package:dbpapp/models/user_model.dart';
 import 'package:dbpapp/screens/search_electric.dart';
 import 'package:dbpapp/screens/store.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,10 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
   // Explicit
   ReportElectricModel myReportElectricModel;
   EquipmentElectricModel myEquipmentElectricModel;
+  final formKey = GlobalKey<FormState>();
+  UserAccoutModel userAccoutModel;
+  String loginString = '';
+  UserModel userModel;
   String userString,
       levelString = '',
       keyString,
@@ -35,8 +40,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
       nameString,
       placeStatusString = 'นำเข้า';
 
-  final formKey = GlobalKey<FormState>();
-  UserAccoutModel userAccoutModel;
+  
 
   // Medthod
   @override
@@ -53,13 +57,14 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
     userString = sharedPreferences.getString('User');
     print(userString);
     findLevel();
+    findNameLogin();
   }
 
   Future findLevel() async {
     String url = '${MyStyle().urlGetUser}$userString';
     Response response = await get(url);
     var result = json.decode(response.body);
-    print(result);
+    print('find LV = $result');
     for (var map in result) {
       userAccoutModel = UserAccoutModel.fromJSON(map);
       setState(() {
@@ -67,6 +72,21 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
       });
     }
   }
+
+  Future<void> findNameLogin() async {
+    String url = '${MyStyle().urlGetName}$userString';
+    Response response = await get(url);
+    var result = jsonDecode(response.body);
+    print('result findNameLogin = $result');
+    for (var map in result) {
+      setState(() {
+        userModel = UserModel.fromJson(map);
+        loginString = userModel.name;
+        print('loginString = $loginString');
+      });
+    }
+  }
+
 
   Widget barEditEquipment() {
     return IconButton(
@@ -661,11 +681,10 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
     String setup = myEquipmentElectricModel.setupEqEe;
     String place = myEquipmentElectricModel.placeEqEe;
     String total = '${myEquipmentElectricModel.totalEqEe} -> $totalAInt';
-    String myProcess = process;
 
-    if (myProcess == 1) {
+    if (process == '1') {
       String url =
-          'https://iot-en.me/api/addReportElectric.php?isAdd=true&key_rp_ee=$key&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$myProcess&status_rp_ee=$placeStatusString';
+          'https://iot-en.me/api/addReportElectric.php?isAdd=true&key_rp_ee=$key&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$process&status_rp_ee=$placeStatusString&admin_rp_ee=$loginString';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
@@ -677,7 +696,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
       }
     } else {
       String url =
-          'https://iot-en.me/api/addReportElectric.php?isAdd=true&key_rp_ee=$key&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$myProcess&status_rp_ee=$placeStatusString';
+          'https://iot-en.me/api/addReportElectric.php?isAdd=true&key_rp_ee=$key&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$process&status_rp_ee=$placeStatusString&admin_rp_ee=$loginString';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {

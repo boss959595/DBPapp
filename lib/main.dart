@@ -1,4 +1,5 @@
 import 'package:dbpapp/screens/home.dart';
+import 'package:dbpapp/screens/store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -11,7 +12,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     return MaterialApp(title: 'DBP Store',
-      home: Home(),
+       home: Home(),
+
     );
   }
 }

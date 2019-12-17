@@ -44,7 +44,7 @@ class _MyCenterState extends State<MyCenter> {
           child: Image.asset(iconMaterial[indexMaterial]),
         ),
         title: Text(
-          'วัสดุ และ อุปกรณ์',
+          'รายการ อะไหล่',
           style: TextStyle(fontSize: MyStyle().h2),
         ),
         onTap: () {

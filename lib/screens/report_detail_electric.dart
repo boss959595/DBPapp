@@ -144,6 +144,28 @@ class _ReportDetailElectricState extends State<ReportDetailElectric> {
     );
   }
 
+  Widget mySave() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'สถานที่จัดเก็บ : ',
+          style: TextStyle(
+              fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
+        ),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Text(
+            '${myReportElectricModel.saveRpEe}',
+            softWrap: false,
+            overflow: TextOverflow.fade,
+            style: TextStyle(fontSize: MyStyle().h2),
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget myPlace() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -253,6 +275,8 @@ class _ReportDetailElectricState extends State<ReportDetailElectric> {
                 mySize(),
                 Divider(),
                 mySetup(),
+                Divider(),
+                mySave(),
                 Divider(),
                 myPlace(),
                 Divider(),

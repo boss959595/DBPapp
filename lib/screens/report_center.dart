@@ -134,7 +134,7 @@ class _ReportCenterState extends State<ReportCenter> {
     print('All Report = $result');
     for (var map in result) {
       ReportModel reportModel = ReportModel.formJSON(map);
-     //print('Date = ${reportModel.dateEe}, Name = ${reportModel.nameRe}');
+      //print('Date = ${reportModel.dateEe}, Name = ${reportModel.nameRe}');
       setState(() {
         reportModels.add(reportModel);
         filterReportModels = reportModels;
@@ -143,20 +143,44 @@ class _ReportCenterState extends State<ReportCenter> {
   }
 
   Widget showDateReport(int index) {
-    return Text(
-      filterReportModels[index].dateEe,
-      style: TextStyle(
-        fontSize: 15.0,
-        color: Colors.black,
+    if(filterReportModels[index].processRe=='0'){
+      return Center(
+      child: FlatButton.icon(
+        color: Colors.red,
+        icon: Icon(Icons.add_shopping_cart,color: Colors.lightGreenAccent[400],size: 17.0,),
+        label: Text(
+          filterReportModels[index].dateEe,
+          style: TextStyle(
+            fontSize: 12.0,
+            color: Colors.black,
+          ),
+        ),
       ),
     );
+    }else{
+      return Center(
+      child: FlatButton.icon(
+        color: Colors.red,
+        icon: Icon(Icons.remove_shopping_cart,color: Colors.redAccent[700],size: 17.0,),
+        label: Text(
+          filterReportModels[index].dateEe,
+          style: TextStyle(
+            fontSize: 12.0,
+            color: Colors.black,
+          ),
+        ),
+      ),
+    );
+
+    }
+    
   }
 
   Widget showNameReport(int index) {
     return Text(
       filterReportModels[index].nameRe,
       style: TextStyle(
-        fontSize: 15.0,
+        fontSize: 12.0,
         color: Colors.orange,
       ),
     );
@@ -170,26 +194,21 @@ class _ReportCenterState extends State<ReportCenter> {
           return GestureDetector(
             child: Card(
               child: Container(
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 0.0),
                 child: Row(
                   children: <Widget>[
-                    Icon(
-                      Icons.play_arrow,
-                      color: Colors.grey,
-                    ),
-                    Container(
+                    Container(width: 166,
                       child: Row(
                         children: <Widget>[
                           showDateReport(index),
                         ],
                       ),
                     ),
-                    Icon(
-                      Icons.keyboard_arrow_right,
-                      color: Colors.blue[600],
-                    ),
+                    // Icon(
+                    //   Icons.keyboard_arrow_right,
+                    //   color: Colors.blue[600],
+                    // ),
                     Container(
-                      width: 158,
+                      width: 186,
                       child: Wrap(
                         children: <Widget>[
                           showNameReport(index),
@@ -227,7 +246,8 @@ class _ReportCenterState extends State<ReportCenter> {
       ),
       body: Column(
         children: <Widget>[
-          Container(padding: EdgeInsets.fromLTRB(3.0, 10.0, 1.0, 5.0),
+          Container(
+            padding: EdgeInsets.fromLTRB(3.0, 10.0, 1.0, 5.0),
             child: Row(
               children: <Widget>[
                 searchTextReportDate(),

@@ -8,7 +8,7 @@ import 'report_detail_electric.dart';
 
 class ReportElectric extends StatefulWidget {
   final ReportElectricModel reportElectricModel;
-  ReportElectric({Key key,this.reportElectricModel}):super(key:key);
+  ReportElectric({Key key, this.reportElectricModel}) : super(key: key);
   @override
   _ReportElectricState createState() => _ReportElectricState();
 }
@@ -29,27 +29,25 @@ class Debouncer {
 }
 
 class _ReportElectricState extends State<ReportElectric> {
- 
 // Explicit
-ReportElectricModel myReportElectric;
-List<ReportElectricModel> reportElectricModels=[];
-List<ReportElectricModel> filterReportElectricModels=[];
-final debouncer = Debouncer(milliseconds: 500);
-final formKey = GlobalKey<FormState>();
-String userString;
-
+  ReportElectricModel myReportElectric;
+  List<ReportElectricModel> reportElectricModels = [];
+  List<ReportElectricModel> filterReportElectricModels = [];
+  final debouncer = Debouncer(milliseconds: 500);
+  final formKey = GlobalKey<FormState>();
+  String userString;
 
 // Medthod
-@override
+  @override
   void initState() {
     super.initState();
     setState(() {
       readAllDataReport();
-      myReportElectric=widget.reportElectricModel;
+      myReportElectric = widget.reportElectricModel;
       findUser();
     });
   }
- 
+
   Future findUser() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     userString = sharedPreferences.getString('User');
@@ -63,7 +61,8 @@ String userString;
     var result = json.decode(response.body);
     print('All Report = $result');
     for (var map in result) {
-      ReportElectricModel reportElectricModel = ReportElectricModel.formJSON(map);
+      ReportElectricModel reportElectricModel =
+          ReportElectricModel.formJSON(map);
       setState(() {
         reportElectricModels.add(reportElectricModel);
         filterReportElectricModels = reportElectricModels;
@@ -88,8 +87,9 @@ String userString;
             setState(() {
               filterReportElectricModels = reportElectricModels
                   .where(
-                    (u) =>
-                        (u.dateRpEe.toLowerCase().contains(value.toLowerCase())),
+                    (u) => (u.dateRpEe
+                        .toLowerCase()
+                        .contains(value.toLowerCase())),
                   )
                   .toList();
             });
@@ -130,8 +130,9 @@ String userString;
             setState(() {
               filterReportElectricModels = reportElectricModels
                   .where(
-                    (u) =>
-                        (u.sizeRpEe.toLowerCase().contains(value.toLowerCase())),
+                    (u) => (u.sizeRpEe
+                        .toLowerCase()
+                        .contains(value.toLowerCase())),
                   )
                   .toList();
             });
@@ -140,16 +141,45 @@ String userString;
       ),
     );
   }
- 
- 
+
   Widget showDateReport(int index) {
-    return Text(
-      filterReportElectricModels[index].dateRpEe,
-      style: TextStyle(
-        fontSize: 15.0,
-        color: Colors.black,
-      ),
-    );
+    if (filterReportElectricModels[index].processRpEe == '0') {
+      return Center(
+        child: FlatButton.icon(
+          color: Colors.red,
+          icon: Icon(
+            Icons.add_shopping_cart,
+            color: Colors.lightGreenAccent[400],
+            size: 17.0,
+          ),
+          label: Text(
+            filterReportElectricModels[index].dateRpEe,
+            style: TextStyle(
+              fontSize: 12.0,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      );
+    } else {
+      return Center(
+        child: FlatButton.icon(
+          color: Colors.red,
+          icon: Icon(
+            Icons.remove_shopping_cart,
+            color: Colors.redAccent[700],
+            size: 17.0,
+          ),
+          label: Text(
+            filterReportElectricModels[index].dateRpEe,
+            style: TextStyle(
+              fontSize: 12.0,
+              color: Colors.black,
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   Widget showNameReport(int index) {
@@ -173,20 +203,12 @@ String userString;
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 8.0, 0.0),
                 child: Row(
                   children: <Widget>[
-                    Icon(
-                      Icons.play_arrow,
-                      color: Colors.grey,
-                    ),
                     Container(
                       child: Row(
                         children: <Widget>[
                           showDateReport(index),
                         ],
                       ),
-                    ),
-                    Icon(
-                      Icons.keyboard_arrow_right,
-                      color: Colors.blue[600],
                     ),
                     Container(
                       width: 158,
@@ -227,7 +249,8 @@ String userString;
       ),
       body: Column(
         children: <Widget>[
-          Container(padding: EdgeInsets.fromLTRB(3.0, 10.0, 1.0, 5.0),
+          Container(
+            padding: EdgeInsets.fromLTRB(3.0, 10.0, 1.0, 5.0),
             child: Row(
               children: <Widget>[
                 searchTextReportDate(),

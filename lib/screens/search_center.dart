@@ -223,7 +223,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
             titlePadding: EdgeInsets.fromLTRB(0.0, 3.0, 0.0, 3.0),
             contentPadding: EdgeInsets.fromLTRB(20.0, 2.0, 20.0, 20.0),
             title: Text(
-              'เพิ่มวัสดุหรืออุปกรณ์',
+              'เพิ่มอะไหล่',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.red),
             ),
@@ -247,7 +247,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
         children: <Widget>[
           TextFormField(
             decoration: InputDecoration(
-              labelText: 'รหัสวัสดุหรืออุปกรณ์',
+              labelText: 'รหัสอะไหล่',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.yellow.shade600),
                 borderRadius: BorderRadius.circular(20.0),
@@ -255,7 +255,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
             ),
             validator: (value) {
               if (value.isEmpty) {
-                return 'กรุณาใส่รหัสวัสดุหรืออุปกรณ์';
+                return 'กรุณาใส่ รหัสอะไหล่';
               } else {
                 return null;
               }
@@ -269,7 +269,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
           ),
           TextFormField(
             decoration: InputDecoration(
-              labelText: 'ชื่อวัสดุหรืออุปกรณ์',
+              labelText: 'ชื่ออะไหล่',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.yellow.shade600),
                 borderRadius: BorderRadius.circular(20.0),
@@ -277,7 +277,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
             ),
             validator: (value) {
               if (value.isEmpty) {
-                return 'กรุณาใส่ชื่อวัสดุหรืออุปกรณ์';
+                return 'กรุณาใส่ชื่อ อะไหล่';
               } else {
                 return null;
               }
@@ -502,7 +502,7 @@ class _SearchViewMaterialState extends State<SearchCenter> {
         iconTheme: IconTheme.of(context),
         backgroundColor: Colors.orange,
         title: Text(
-          'วัสดุ และ อุปกรณ์', //คลังเครื่องกล
+          'รายการอะไหล่', //คลังเครื่องกล
           style: TextStyle(color: Colors.black),
         ),
       ),

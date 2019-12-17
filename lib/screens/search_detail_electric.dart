@@ -34,6 +34,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
       keyString,
       sizeString,
       setupString,
+      saveString,
       placeString,
       limitString,
       numberString,
@@ -138,7 +139,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
             ),
             validator: (value) {
               if (value.isEmpty) {
-                return 'กรุณาใส่ รหัส Motor';
+                return null;
               } else {
                 return null;
               }
@@ -191,6 +192,28 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
             },
             onSaved: (value) {
               setupString = value.trim();
+            },
+          ),SizedBox(
+            height: 3.0,
+          ),
+          TextFormField(
+            initialValue: "${myEquipmentElectricModel.saveEqEe}",
+            decoration: InputDecoration(
+              labelText: 'สถานที่จัดเก็บ',
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.yellow.shade600),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'กรุณาใส่ สถานที่จัดเก็บ';
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) {
+              saveString = value.trim();
             },
           ),
           SizedBox(
@@ -260,10 +283,10 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
 
   Future<void> editEquipment() async {
      print(
-        'bossx = ${myEquipmentElectricModel.idEqEe},$sizeString, $setupString, $placeString, $limitString , $keyString');
+        'bossx = ${myEquipmentElectricModel.idEqEe},$sizeString, $setupString,$saveString, $placeString, $limitString , $keyString');
 
     String url =
-        'https://iot-en.me/api/editEquipmentWhereIdElectric.php/?isAdd=true&id_eq_ee=${myEquipmentElectricModel.idEqEe}&key_eq_ee=$keyString&size_eq_ee=$sizeString&setup_eq_ee=$setupString&place_eq_ee=$placeString&total_eq_ee=${myEquipmentElectricModel.totalEqEe}&limit_eq_ee=$limitString';
+        'https://iot-en.me/api/editEquipmentWhereIdElectric.php/?isAdd=true&id_eq_ee=${myEquipmentElectricModel.idEqEe}&key_eq_ee=$keyString&size_eq_ee=$sizeString&setup_eq_ee=$setupString&save_eq_ee=$saveString&place_eq_ee=$placeString&total_eq_ee=${myEquipmentElectricModel.totalEqEe}&limit_eq_ee=$limitString';
 
     Response response = await get(url);
     var result = json.decode(response.body);
@@ -401,6 +424,28 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
           fit: FlexFit.loose,
           child: Text(
             '${myEquipmentElectricModel.setupEqEe}',
+            softWrap: false,
+            overflow: TextOverflow.fade,
+            style: TextStyle(fontSize: MyStyle().h2),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget mySave() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'สถานที่จัดเก็บ : ',
+          style: TextStyle(
+              fontSize: MyStyle().h2, color: Colors.lightBlueAccent[700]),
+        ),
+        Flexible(
+          fit: FlexFit.loose,
+          child: Text(
+            '${myEquipmentElectricModel.saveEqEe}',
             softWrap: false,
             overflow: TextOverflow.fade,
             style: TextStyle(fontSize: MyStyle().h2),
@@ -679,12 +724,13 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
     String key = myEquipmentElectricModel.keyEqEe;
     String size = myEquipmentElectricModel.sizeEqEe;
     String setup = myEquipmentElectricModel.setupEqEe;
+    String save = myEquipmentElectricModel.saveEqEe;
     String place = myEquipmentElectricModel.placeEqEe;
     String total = '${myEquipmentElectricModel.totalEqEe} -> $totalAInt';
 
     if (process == '1') {
       String url =
-          'https://iot-en.me/api/addReportElectric.php?isAdd=true&key_rp_ee=$key&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$process&status_rp_ee=$placeStatusString&admin_rp_ee=$loginString';
+          'https://iot-en.me/api/addReportElectric.php?isAdd=true&key_rp_ee=$key&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&save_rp_ee=$save&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$process&status_rp_ee=$placeStatusString&admin_rp_ee=$loginString';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
@@ -696,7 +742,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
       }
     } else {
       String url =
-          'https://iot-en.me/api/addReportElectric.php?isAdd=true&key_rp_ee=$key&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$process&status_rp_ee=$placeStatusString&admin_rp_ee=$loginString';
+          'https://iot-en.me/api/addReportElectric.php?isAdd=true&key_rp_ee=$key&user_rp_ee=$user&size_rp_ee=$size&setup_rp_ee=$setup&save_rp_ee=$save&place_rp_ee=$place&total_rp_ee=$total&process_rp_ee=$process&status_rp_ee=$placeStatusString&admin_rp_ee=$loginString';
       Response response = await get(url);
       var result = json.decode(response.body);
       if (result.toString() == 'true') {
@@ -730,7 +776,7 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
     //print('VVVV = ${totalAInt}');
 
     String message =
-        '\n ขณะนี้มีจำนวนต่ำกว่าที่กำหนดคือ ${myEquipmentElectricModel.limitEqEe} \n\n ลงวันที่ : $realTime \n ขนาด Motor : ${myEquipmentElectricModel.sizeEqEe} \n การติดตั้ง : ${myEquipmentElectricModel.setupEqEe} \n สถานที่ใช้งาน : ${myEquipmentElectricModel.placeEqEe} \n จำนวนคงเหลือ : ${totalAInt} EA';
+        '\n ขณะนี้มีจำนวนต่ำกว่าที่กำหนดคือ ${myEquipmentElectricModel.limitEqEe} \n\n ลงวันที่ : $realTime \n ขนาด Motor : ${myEquipmentElectricModel.sizeEqEe} \n การติดตั้ง : ${myEquipmentElectricModel.setupEqEe} \n สถานที่จัดเก็บ : ${myEquipmentElectricModel.saveEqEe} \n สถานที่ใช้งาน : ${myEquipmentElectricModel.placeEqEe} \n จำนวนคงเหลือ : ${totalAInt} EA';
     String stickerLineGroup = '1';
     String stickerLineId = '3';
 
@@ -803,6 +849,8 @@ class _ShowDetailElectricState extends State<ShowDetailElectric> {
                 mySize(),
                 Divider(),
                 mySetup(),
+                Divider(),
+                mySave(),
                 Divider(),
                 myPlace(),
                 Divider(),

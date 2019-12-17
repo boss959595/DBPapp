@@ -47,6 +47,7 @@ class _SearchElectricState extends State<SearchElectric> {
       keyString,
       sizeString,
       setupString,
+      saveString,
       placeString,
       totalString,
       limitString;
@@ -86,8 +87,7 @@ class _SearchElectricState extends State<SearchElectric> {
   }
 
   Future<void> readAllData() async {
-    String url =
-        'https://iot-en.me/api/getAllEquipmentElectric.php';
+    String url = 'https://iot-en.me/api/getAllEquipmentElectric.php';
     Response response = await get(url);
     var result = json.decode(response.body);
     print('result = $result');
@@ -250,7 +250,7 @@ class _SearchElectricState extends State<SearchElectric> {
             ),
             validator: (value) {
               if (value.isEmpty) {
-                return 'กรุณาใส่รหัส Motor';
+                return null;
               } else {
                 return null;
               }
@@ -301,6 +301,28 @@ class _SearchElectricState extends State<SearchElectric> {
             },
             onSaved: (value) {
               setupString = value.trim();
+            },
+          ),
+          SizedBox(
+            height: 3.0,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
+              labelText: 'สถานที่จัดเก็บ',
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.yellow.shade600),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'กรุณาใส่ สถานที่จัดเก็บ';
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) {
+              saveString = value.trim();
             },
           ),
           SizedBox(
@@ -383,7 +405,7 @@ class _SearchElectricState extends State<SearchElectric> {
         if (formKey.currentState.validate()) {
           formKey.currentState.save();
           print(
-              'boss = $keyString, $sizeString, $setupString, $placeString, $totalString, $limitString');
+              'boss = $keyString, $sizeString, $setupString,$saveString, $placeString, $totalString, $limitString');
           insertEquipment();
           Navigator.of(context).pop();
         }
@@ -409,10 +431,10 @@ class _SearchElectricState extends State<SearchElectric> {
     int xtotalString = int.parse(totalString);
 
     print(
-        'object=$keyString ,$sizeString, $setupString, $placeString, $totalString, $limitString');
+        'object=$keyString ,$sizeString, $setupString,$saveString, $placeString, $totalString, $limitString');
 
     String url =
-        'https://iot-en.me/api/addEquipmentElectric.php?isAdd=true&key_eq_ee=$keyString&size_eq_ee=$sizeString&setup_eq_ee=$setupString&place_eq_ee=$placeString&total_eq_ee=$xtotalString&limit_eq_ee=$xlimitString';
+        'https://iot-en.me/api/addEquipmentElectric.php?isAdd=true&key_eq_ee=$keyString&size_eq_ee=$sizeString&setup_eq_ee=$setupString&save_eq_ee=$saveString&place_eq_ee=$placeString&total_eq_ee=$xtotalString&limit_eq_ee=$xlimitString';
 
     Response response = await get(url);
     var result = json.decode(response.body);

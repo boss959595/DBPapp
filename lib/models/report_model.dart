@@ -9,7 +9,9 @@ class ReportModel {
       unitRe,
       totalRe,
       processRe,
-      statusRe,noRe,becauseRe;
+      statusRe,
+      noRe,
+      becauseRe;
 
   ReportModel(
       this.idEe,
@@ -22,7 +24,9 @@ class ReportModel {
       this.unitRe,
       this.totalRe,
       this.processRe,
-      this.statusRe,this.noRe,this.becauseRe);
+      this.statusRe,
+      this.noRe,
+      this.becauseRe);
 
   ReportModel.formJSON(Map<String, dynamic> map) {
     idEe = map['id_re'];
@@ -48,6 +52,7 @@ class ReportElectricModel {
       userRpEe,
       sizeRpEe,
       setupRpEe,
+      saveRpEe,
       placeRpEe,
       totalRpEe,
       processRpEe,
@@ -60,6 +65,7 @@ class ReportElectricModel {
       this.userRpEe,
       this.sizeRpEe,
       this.setupRpEe,
+      this.saveRpEe,
       this.placeRpEe,
       this.totalRpEe,
       this.processRpEe,
@@ -72,6 +78,7 @@ class ReportElectricModel {
     userRpEe = map['user_rp_ee'];
     sizeRpEe = map['size_rp_ee'];
     setupRpEe = map['setup_rp_ee'];
+    saveRpEe = map['save_rp_ee'];
     placeRpEe = map['place_rp_ee'];
     totalRpEe = map['total_rp_ee'];
     processRpEe = map['process_rp_ee'];

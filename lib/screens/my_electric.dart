@@ -46,7 +46,7 @@ class _MyElectricState extends State<MyElectric> {
           child: Image.asset(iconMaterial[indexMaterial]),
         ),
         title: Text(
-          'วัสดุ และ อุปกรณ์',
+          'รายการ มอเตอร์',
           style: TextStyle(fontSize: MyStyle().h2),
         ),
         onTap: () {
@@ -70,7 +70,8 @@ class _MyElectricState extends State<MyElectric> {
         title: Text(
           'แจ้งเตือน',
           style: TextStyle(fontSize: MyStyle().h2),
-        ),onTap: () {
+        ),
+        onTap: () {
           MaterialPageRoute materialPageRoute = MaterialPageRoute(
               builder: (BuildContext context) => AlertLimitElectric());
           Navigator.of(context).push(materialPageRoute);
@@ -93,7 +94,8 @@ class _MyElectricState extends State<MyElectric> {
           style: TextStyle(
             fontSize: MyStyle().h2,
           ),
-        ),onTap: () {
+        ),
+        onTap: () {
           MaterialPageRoute materialPageRoute = MaterialPageRoute(
               builder: (BuildContext context) => ReportElectric());
           Navigator.of(context).push(materialPageRoute);
@@ -105,8 +107,8 @@ class _MyElectricState extends State<MyElectric> {
   Widget content() {
     return Container(
       padding: EdgeInsets.only(
-        left: 35.0,
-        right: 35.0,
+        left: 30.0,
+        right: 30.0,
         top: 100.0,
       ),
       child: Column(

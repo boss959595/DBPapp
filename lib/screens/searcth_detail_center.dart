@@ -46,8 +46,6 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
       noString,
       becauseString;
 
-  
-
   // Method
   @override
   void initState() {
@@ -66,7 +64,7 @@ class _ShowDetailCenterState extends State<ShowDetailCenter> {
     findNameLogin();
   }
 
-Future findLevel() async {
+  Future findLevel() async {
     String url = '${MyStyle().urlGetUser}$userString';
     Response response = await get(url);
     var result = json.decode(response.body);
@@ -110,7 +108,7 @@ Future findLevel() async {
             titlePadding: EdgeInsets.fromLTRB(0.0, 3.0, 0.0, 5.0),
             contentPadding: EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 0.0),
             title: Text(
-              'แก้ไขข้อมูลวัสดุหรืออุปกรณ์',
+              'แก้ไขข้อมูลอะไหล่',
               textAlign: TextAlign.center,
               style: TextStyle(color: Colors.red),
             ),
@@ -135,7 +133,7 @@ Future findLevel() async {
           TextFormField(
             initialValue: "${myEquipmentModel.key}",
             decoration: InputDecoration(
-              labelText: 'รหัสวัสดุหรืออุปกรณ์',
+              labelText: 'รหัสอะไหล่',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.yellow.shade600),
                 borderRadius: BorderRadius.circular(20.0),
@@ -143,7 +141,7 @@ Future findLevel() async {
             ),
             validator: (value) {
               if (value.isEmpty) {
-                return 'กรุณาใส่รหัสวัสดุหรืออุปกรณ์';
+                return 'กรุณาใส่รหัสอะไหล่';
               } else {
                 return null;
               }
@@ -158,7 +156,7 @@ Future findLevel() async {
           TextFormField(
             initialValue: "${myEquipmentModel.name}",
             decoration: InputDecoration(
-              labelText: 'ชื่อวัสดุหรืออุปกรณ์',
+              labelText: 'ชื่ออะไหล่',
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.yellow.shade600),
                 borderRadius: BorderRadius.circular(20.0),
@@ -166,7 +164,7 @@ Future findLevel() async {
             ),
             validator: (value) {
               if (value.isEmpty) {
-                return 'กรุณาใส่ชื่อวัสดุหรืออุปกรณ์';
+                return 'กรุณาใส่ชื่ออะไหล่';
               } else {
                 return null;
               }
@@ -268,6 +266,30 @@ Future findLevel() async {
               xlimitString = value.trim();
             },
           ),
+           SizedBox(
+            height: 3.0,
+          ),
+          TextFormField(
+            initialValue: "${myEquipmentModel.total}",
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              labelText: 'จำนวนอะไหล่',
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.yellow.shade600),
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+            ),
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'กรุณาใส่จำนวนอะไหล่';
+              } else {
+                return null;
+              }
+            },
+            onSaved: (value) {
+              xlimitString = value.trim();
+            },
+          ),
           SizedBox(
             height: 3.0,
           ),
@@ -330,8 +352,6 @@ Future findLevel() async {
         MaterialPageRoute(builder: (BuildContext context) => SearchCenter());
     Navigator.of(context).push(materialPageRoute);
   }
-
-  
 
   // Widget contentRow1() {
   //   return Row(
@@ -442,13 +462,39 @@ Future findLevel() async {
     );
   }
 
-  Widget myButton() {
+  Widget adminButton() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
         Row(
           children: <Widget>[
             increaseButton(),
+            decreaseButton(),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget miniAdminButton() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
+            increaseButton(),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget userButton() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        Row(
+          children: <Widget>[
             decreaseButton(),
           ],
         ),
@@ -534,7 +580,7 @@ Future findLevel() async {
           SizedBox(
             height: 5.0,
           ),
-          TextFormField(
+          TextFormField(initialValue: "${loginString}",
             decoration: InputDecoration(
               labelText: 'ชื่อผู้ทำรายการ',
               enabledBorder: OutlineInputBorder(
@@ -560,11 +606,11 @@ Future findLevel() async {
           SizedBox(
             height: 5.0,
           ),
-           index == 1 ? noUse() : SizedBox(),
+          index == 1 ? noUse() : SizedBox(),
           SizedBox(
             height: 5.0,
           ),
-           index == 1 ? becauseUse() : SizedBox(),
+          index == 1 ? becauseUse() : SizedBox(),
           SizedBox(
             height: 5.0,
           ),
@@ -751,9 +797,6 @@ Future findLevel() async {
     String unit = myEquipmentModel.unit;
     String total = '${myEquipmentModel.total} -> $totalAInt';
 
-
-
-
     if (process == '1') {
       String url =
           'https://iot-en.me/api/addReportBoss.php?isAdd=true&key_re=$key&user_re=$nameString&name_re=$nameEqString&group_re=$group&type_re=$type&unit_re=$unit&total_re=$total&process_re=$process&status_re=$placeString&no_re=$noString&because_re=$becauseString&admin_re=$loginString';
@@ -808,6 +851,7 @@ Future findLevel() async {
     String realTime =
         formatDate(DateTime.now(), [dd, '/', mm, '/', yyyy, ' ', HH, ':', nn]);
     //print('VVVV = ${totalAInt}');
+    
 
     String message =
         '\n ขณะนี้มีจำนวนต่ำกว่าที่กำหนดคือ ${myEquipmentModel.limit} \n\n ลงวันที่ : $realTime \n ชื่อ : ${myEquipmentModel.name} \n กลุ่ม : ${myEquipmentModel.group} \n ประเภท : ${myEquipmentModel.type} \n จำนวนคงเหลือ : ${totalAInt} ${myEquipmentModel.unit}';
@@ -827,7 +871,7 @@ Future findLevel() async {
     var response = await http.post(url,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          "Authorization": "Bearer s1mg5tgZjQICeHgjLSzGbG39kLbVAsDbTilYurdZ2W4",
+          "Authorization": "Bearer zWNuebTnP963lVr9LZTdWmMkVXvnKZOrEmm4jps9jtz",
         },
         body: body);
     print("responseCode ${response.statusCode}");
@@ -897,7 +941,9 @@ Future findLevel() async {
               ],
             ),
           ),
-          levelString == '1' ? myButton() : SizedBox(),
+          levelString == '1' ? adminButton() : SizedBox(),
+          levelString == '11' ? miniAdminButton() : SizedBox(),
+          levelString == '12' ? userButton() : SizedBox(),
         ],
       ),
     );

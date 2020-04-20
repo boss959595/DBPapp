@@ -267,6 +267,8 @@ class _StoreState extends State<Store> {
           Divider(),
           menuElectricStore(),
           Divider(),
+          menuMachineStore(),
+          Divider(),
           SizedBox(
             height: 180.0,
           ),
